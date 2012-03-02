@@ -1,15 +1,13 @@
 package tangyue.circlebreaker;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 
 public class Baffle {
 	private float left;
 	private float bottom;
 	private static float WIDTH = 100;
-	private static float HEIGHT = 10;
+	private static float HEIGHT = 5;
 	private BreakerView view;
 
 	public Baffle(BreakerView view) {
@@ -22,7 +20,6 @@ public class Baffle {
 	}
 
 	public void drawSelf(Canvas canvas, Paint paint) {
-		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 		left = left < 0 ? 0 : left;
 		left = left + WIDTH > view.width ? view.width - WIDTH : left;
 		canvas.drawRect(left, bottom - HEIGHT, left + WIDTH, bottom, paint);
