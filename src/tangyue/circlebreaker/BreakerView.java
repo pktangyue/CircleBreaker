@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,16 +15,21 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	public float x;
 	public float y;
 	public Canvas canvas = null;
+	public int width;
+	public int height;
 	Paint paint = null;
 
-	public BreakerView(Context context) {
+	public BreakerView(Context context, int width, int height) {
 		super(context);
 		// TODO Auto-generated constructor stub
-		thread = new DrawThread(this);
+		this.width = width;
+		this.height = height;
 		holder = getHolder();
 		holder.addCallback(this);
+		thread = new DrawThread(this);
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
+
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package tangyue.circlebreaker;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -14,8 +15,10 @@ public class MainActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		BreakerView view = new BreakerView(this);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		Display display = getWindowManager().getDefaultDisplay();
+		BreakerView view = new BreakerView(this, display.getWidth(),
+				display.getHeight());
 		setContentView(view);
 	}
 }
