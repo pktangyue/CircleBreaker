@@ -25,11 +25,6 @@ public class DrawThread extends Thread {
 				double fps = Math.round(100000000000.0 / span * 20) / 100.0;// 计算帧速率
 				view.fps = "FPS:" + fps;// 将计算出的帧速率设置到BallView的相应字符串对象中
 			}
-//			try {
-//				Thread.sleep(20); // 线程休眠一段时间
-//			} catch (Exception e) {
-//				e.printStackTrace(); // 捕获并打印异常
-//			}
 		}
 	}
 }

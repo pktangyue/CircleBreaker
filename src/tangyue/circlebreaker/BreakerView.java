@@ -10,21 +10,19 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
-	public SurfaceHolder holder;
-	public int width;
-	public int height;
-	public String fps="FPS:N/A";
+	SurfaceHolder holder;
+	int width;
+	int height;
+	String fps = "FPS:N/A";
+	Baffle baffle;
+	Ball ball;
 
-	private DrawThread thread;
+	private DrawThread drawThread;
+	private BallThread ballThread;
 	private float x;
 	private float y;
-	private float prevX = 0;
-	private float prevY = 0;
 	private Canvas canvas = null;
-	private Paint paint = null;
 	private boolean isStart = false;
-	private Baffle baffle;
-	private Ball ball;
 
 	public BreakerView(Context context, int width, int height) {
 		super(context);
@@ -33,30 +31,53 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		this.height = height;
 		holder = getHolder();
 		holder.addCallback(this);
+		drawThread = new DrawThread(this);
+		initBaffle();
+		initBall();
+	}
+
+	private void initBaffle() {
 		baffle = new Baffle(this);
+	}
+
+	private void initBall() {
 		ball = new Ball(this);
-		paint = new Paint();
-		paint.setColor(Color.WHITE);
-		paint.setAntiAlias(true);
-		thread = new DrawThread(this);
+		ballThread = new BallThread(this);
+	}
+
+	private void destoryBall() {
+		ball = null;
+		ballThread.flag = false;
+		ballThread = null;
 	}
 
 	public void doDraw() {
 		canvas = holder.lockCanvas();
+		// 清空canvas
 		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-		if (prevX != x || prevY != y || isStart) {
-			prevX = x;
-			prevY = y;
-			baffle.moveTo(x, y, canvas, paint);
-			ball.drawSelf(canvas, paint);
-		} else if (!isStart) {
-			baffle.init(canvas, paint);
-			ball.init(canvas, paint);
+		if (!isStart) {
+			baffle.init(canvas);
+			ball.init(canvas);
+		} else {
+			baffle.moveTo(x, y, canvas);
+			ball.drawSelf(canvas);
 		}
-		canvas.drawText(fps, 30, 30, paint);
+		printFPS(canvas);
 		if (canvas != null) {
 			holder.unlockCanvasAndPost(canvas);
 		}
+	}
+
+	public void reset() {
+		isStart = false;
+		destoryBall();
+		initBall();
+	}
+
+	public void printFPS(Canvas canvas) {
+		Paint paint = new Paint();
+		paint.setColor(Color.WHITE);
+		canvas.drawText(fps, 30, 30, paint);
 	}
 
 	@Override
@@ -67,6 +88,9 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
 			isStart = true;
+			if (!ballThread.isAlive()) {
+				ballThread.start();
+			}
 			break;
 		default:
 			break;
@@ -85,16 +109,17 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-		if (!thread.isAlive()) {
-			thread.start();
+		if (!drawThread.isAlive()) {
+			drawThread.start();
 		}
 	}
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-		thread.flag = false;
-		thread = null;
+		ballThread.flag = drawThread.flag = false;
+		ballThread = null;
+		drawThread = null;
 	}
 
 }
