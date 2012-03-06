@@ -5,8 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 public class Ball {
-	float left;
-	float top;
+	float x;
+	float y;
 	float yv = -0.5f; // 负数表示向上
 	float xv = -0.2f;
 	boolean isAlive = false;
@@ -23,12 +23,12 @@ public class Ball {
 	}
 
 	public void init(Canvas canvas) {
-		this.left = view.width / 2;
-		this.top = view.baffle.bottom - RADIUS - Baffle.HEIGHT;
+		this.x = view.width / 2;
+		this.y = view.baffle.bottom - RADIUS - Baffle.HEIGHT;
 		drawSelf(canvas);
 	}
 
 	public void drawSelf(Canvas canvas) {
-		canvas.drawCircle(left, top, RADIUS, paint);
+		canvas.drawCircle(x, y, RADIUS, paint);
 	}
 }

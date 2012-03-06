@@ -24,15 +24,15 @@ public class BallThread extends Thread {
 			if (isLose(timespan)) {
 				view.reset();
 			}
-			ball.top = calculateTop(timespan);
-			ball.left = calculateLeft(timespan);
+			ball.y = calculateY(timespan);
+			ball.x = calculateX(timespan);
 			start = current;
 		}
 	}
 
-	public float calculateTop(float timespan) {
+	public float calculateY(float timespan) {
 		float span = timespan * ball.yv;
-		float tmpTop = ball.top + span;
+		float tmpTop = ball.y + span;
 		if (tmpTop < Ball.RADIUS) {
 			ball.yv = -ball.yv;
 			return 2 * Ball.RADIUS - tmpTop;
@@ -43,9 +43,9 @@ public class BallThread extends Thread {
 		return tmpTop;
 	}
 
-	public float calculateLeft(float timespan) {
+	public float calculateX(float timespan) {
 		float span = timespan * ball.xv;
-		float tmpLeft = ball.left + span;
+		float tmpLeft = ball.x + span;
 		if (tmpLeft - Ball.RADIUS < 0) {
 			ball.xv = -ball.xv;
 			return 2 * Ball.RADIUS - tmpLeft;
@@ -59,8 +59,8 @@ public class BallThread extends Thread {
 	public boolean isLose(float timespan) {
 		float spanY = timespan * ball.yv;
 		float spanX = timespan * ball.xv;
-		float tmpTop = ball.top + spanY;
-		float tmpLeft = ball.left + spanX;
+		float tmpTop = ball.y + spanY;
+		float tmpLeft = ball.x + spanX;
 		if (tmpTop + Ball.RADIUS > baffle.bottom
 				&& (tmpLeft + Ball.RADIUS < baffle.left || (tmpLeft
 						- Ball.RADIUS > baffle.left + Baffle.WIDTH))) {
