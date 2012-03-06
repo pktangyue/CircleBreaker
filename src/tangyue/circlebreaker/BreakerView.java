@@ -1,5 +1,7 @@
 package tangyue.circlebreaker;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,6 +18,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	String fps = "FPS:N/A";
 	Baffle baffle;
 	Ball ball;
+	ArrayList<Circle> circles = new ArrayList<Circle>();
 
 	private DrawThread drawThread;
 	private BallThread ballThread;
@@ -34,6 +37,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		drawThread = new DrawThread(this);
 		initBaffle();
 		initBall();
+		initCircle();
 	}
 
 	private void initBaffle() {
@@ -45,10 +49,24 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		ballThread = new BallThread(this);
 	}
 
+	private void initCircle() {
+		circles.add(new Circle(50, 420, 30, Color.RED));
+		circles.add(new Circle(145, 350, 30, Color.RED));
+		circles.add(new Circle(240, 300, 30, Color.RED));
+		circles.add(new Circle(335, 350, 30, Color.RED));
+		circles.add(new Circle(430, 420, 30, Color.RED));
+	}
+
 	private void destoryBall() {
 		ball = null;
 		ballThread.flag = false;
 		ballThread = null;
+	}
+
+	public void reset() {
+		isStart = false;
+		destoryBall();
+		initBall();
 	}
 
 	public void doDraw() {
@@ -62,16 +80,13 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 			baffle.moveTo(x, y, canvas);
 			ball.drawSelf(canvas);
 		}
+		for (Circle circle : circles) {
+			circle.drawSelf(canvas);
+		}
 		printFPS(canvas);
 		if (canvas != null) {
 			holder.unlockCanvasAndPost(canvas);
 		}
-	}
-
-	public void reset() {
-		isStart = false;
-		destoryBall();
-		initBall();
 	}
 
 	public void printFPS(Canvas canvas) {

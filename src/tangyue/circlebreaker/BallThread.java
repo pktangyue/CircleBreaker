@@ -1,9 +1,12 @@
 package tangyue.circlebreaker;
 
+import java.util.ArrayList;
+
 public class BallThread extends Thread {
 	private BreakerView view;
 	private Ball ball;
 	private Baffle baffle;
+	private ArrayList<Circle> circles;
 	private long current;
 	private long start;
 
@@ -13,6 +16,7 @@ public class BallThread extends Thread {
 		this.view = view;
 		this.ball = view.ball;
 		this.baffle = view.baffle;
+		this.circles = view.circles;
 		this.flag = true;
 	}
 
@@ -26,7 +30,18 @@ public class BallThread extends Thread {
 			}
 			ball.y = calculateY(timespan);
 			ball.x = calculateX(timespan);
+			checkEliminate(ball.x, ball.y);
 			start = current;
+		}
+	}
+
+	public void checkEliminate(float x, float y) {
+		for (int i = 0; i < circles.size(); i++) {
+			if (Math.pow(circles.get(i).x - x, 2)
+					+ Math.pow(circles.get(i).y - y, 2) <= Math.pow(Ball.RADIUS
+					+ circles.get(i).radius, 2)) {
+				circles.remove(i);
+			}
 		}
 	}
 
