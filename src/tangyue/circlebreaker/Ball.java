@@ -7,8 +7,8 @@ import android.graphics.Paint;
 public class Ball {
 	float x;
 	float y;
-	float yv = -0.5f; // 负数表示向上
-	float xv = -0.2f;
+	float yv = -50f; // 负数表示向上
+	float xv = -20f;
 	boolean isAlive = false;
 	final static float RADIUS = 10;
 	private BreakerView view;

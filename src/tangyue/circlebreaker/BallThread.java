@@ -24,7 +24,7 @@ public class BallThread extends Thread {
 		start = System.nanoTime();
 		while (flag) {
 			current = System.nanoTime();
-			float timespan = (float) (current - start) / 1000 / 1000;
+			float timespan = (float) (current - start) / 1000 / 1000 / 100;
 			if (isLose(timespan)) {
 				view.reset();
 			}
@@ -53,6 +53,8 @@ public class BallThread extends Thread {
 			return 2 * Ball.RADIUS - tmpTop;
 		} else if (tmpTop + Ball.RADIUS > baffle.bottom) {
 			ball.yv = -ball.yv;
+			changeXV(timespan);
+			changeYV();
 			return 2 * baffle.bottom - 2 * Ball.RADIUS - tmpTop;
 		}
 		return tmpTop;
@@ -69,6 +71,16 @@ public class BallThread extends Thread {
 			return 2 * view.width - 2 * Ball.RADIUS - tmpLeft;
 		}
 		return tmpLeft;
+	}
+
+	public void changeXV(float timespan) {
+		float deltaT = (baffle.bottom - ball.y - Ball.RADIUS) / ball.xv;
+		float tmpLeft = ball.x + deltaT * ball.xv;
+		ball.xv = tmpLeft - baffle.left - Baffle.WIDTH / 2;
+	}
+
+	public void changeYV() {
+
 	}
 
 	public boolean isLose(float timespan) {
