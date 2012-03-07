@@ -1,12 +1,15 @@
 package tangyue.circlebreaker;
 
 import java.util.ArrayList;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,8 +25,6 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private DrawThread drawThread;
 	private BallThread ballThread;
-	private float x;
-	private float y;
 	private Canvas canvas = null;
 	private boolean isStart = false;
 
@@ -38,6 +39,8 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		initBaffle();
 		initBall();
 		initCircle();
+		registerSernor(context);
+
 	}
 
 	private void initBaffle() {
@@ -55,6 +58,32 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		circles.add(new Circle(240, 300, 30, Color.RED));
 		circles.add(new Circle(335, 350, 30, Color.RED));
 		circles.add(new Circle(430, 420, 30, Color.RED));
+	}
+
+	private void registerSernor(Context context) {
+		SensorManager mySensorManager = (SensorManager) context
+				.getSystemService(Context.SENSOR_SERVICE);
+		SensorEventListener mySensorEventListener = new SensorEventListener() {
+			@Override
+			public void onAccuracyChanged(Sensor sensor, int accuracy) {
+			}
+
+			@Override
+			public void onSensorChanged(final SensorEvent event) {
+				if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+					float tmp = -event.values[0];// 使方向和二维坐标一致
+					if (tmp > 0) {
+						tmp = tmp - 5 >= 0 ? 5 : tmp;
+					} else {
+						tmp = tmp + 5 <= 0 ? -5 : tmp;
+					}
+					baffle.left = ((width - Baffle.WIDTH) * (tmp + 5) / 10);
+				}
+			}
+		};
+		mySensorManager.registerListener(mySensorEventListener,
+				mySensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+				SensorManager.SENSOR_DELAY_UI);
 	}
 
 	private void destoryBall() {
@@ -77,7 +106,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 			baffle.init(canvas);
 			ball.init(canvas);
 		} else {
-			baffle.moveTo(x, y, canvas);
+			baffle.drawSelf(canvas);
 			ball.drawSelf(canvas);
 		}
 		for (Circle circle : circles) {
@@ -92,14 +121,18 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	public void printFPS(Canvas canvas) {
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
-		canvas.drawText(fps, 30, 30, paint);
+		Object[] arr = { fps, baffle.left };
+		for (int i = 0; i < arr.length; i++) {
+			canvas.drawText(arr[i].toString(), 30, 30 * (i + 1), paint);
+		}
+
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		int action = event.getAction();
-		x = event.getX();
-		y = event.getY();
+		// x = event.getX();
+		// y = event.getY();
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
 			isStart = true;
@@ -110,7 +143,6 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		default:
 			break;
 		}
-
 		return true;
 	}
 

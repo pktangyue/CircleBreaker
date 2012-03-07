@@ -12,10 +12,10 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);	//无标题
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);	//全屏
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);	//固定垂直
 		Display display = getWindowManager().getDefaultDisplay();
 		BreakerView view = new BreakerView(this, display.getWidth(),
 				display.getHeight());

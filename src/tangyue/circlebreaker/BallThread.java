@@ -53,8 +53,8 @@ public class BallThread extends Thread {
 			return 2 * Ball.RADIUS - tmpTop;
 		} else if (tmpTop + Ball.RADIUS > baffle.bottom) {
 			ball.yv = -ball.yv;
-			changeXV(timespan);
-			changeYV();
+			ball.xv = calculateXV(timespan);
+			ball.yv = calculateYV();
 			return 2 * baffle.bottom - 2 * Ball.RADIUS - tmpTop;
 		}
 		return tmpTop;
@@ -73,14 +73,14 @@ public class BallThread extends Thread {
 		return tmpLeft;
 	}
 
-	public void changeXV(float timespan) {
+	public float calculateXV(float timespan) {
 		float deltaT = (baffle.bottom - ball.y - Ball.RADIUS) / ball.xv;
 		float tmpLeft = ball.x + deltaT * ball.xv;
-		ball.xv = tmpLeft - baffle.left - Baffle.WIDTH / 2;
+		return ball.xv = tmpLeft - baffle.left - Baffle.WIDTH / 2;
 	}
 
-	public void changeYV() {
-
+	public float calculateYV() {
+		return ball.yv;
 	}
 
 	public boolean isLose(float timespan) {
