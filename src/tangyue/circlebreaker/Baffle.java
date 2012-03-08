@@ -7,7 +7,7 @@ import android.graphics.Paint;
 public class Baffle {
 	float left;
 	float bottom;
-	float v = 50;// 速度
+	float v = 0;// 速度
 	final static float WIDTH = 100;
 	final static float HEIGHT = 5;
 	private BreakerView view;
