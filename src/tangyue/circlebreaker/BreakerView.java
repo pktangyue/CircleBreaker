@@ -19,6 +19,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	Ball ball;
 	BreakerSensor sensor;
 	ArrayList<Circle> circles = new ArrayList<Circle>();
+	ArrayList<Drawable> drawables = new ArrayList<Drawable>();
 
 	private DrawThread drawThread;
 	private BallThread ballThread;
@@ -43,11 +44,13 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	private void initBaffle() {
 		baffle = new Baffle(this);
 		baffleThread = new BaffleThread(this);
+		drawables.add(baffle);
 	}
 
 	private void initBall() {
 		ball = new Ball(this);
 		ballThread = new BallThread(this);
+		drawables.add(ball);
 	}
 
 	private void initCircle() {
@@ -56,9 +59,11 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		circles.add(new Circle(240, 300, 30, Color.RED));
 		circles.add(new Circle(335, 350, 30, Color.RED));
 		circles.add(new Circle(430, 420, 30, Color.RED));
+		drawables.addAll(circles);
 	}
 
 	private void destoryBall() {
+		drawables.remove(ball);
 		ball = null;
 		ballThread.flag = false;
 		ballThread = null;
@@ -75,14 +80,13 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		// 清空canvas
 		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 		if (!isStart) {
-			baffle.init(canvas);
-			ball.init(canvas);
+			for (Drawable drawable : drawables) {
+				drawable.init(canvas);
+			}
 		} else {
-			baffle.drawSelf(canvas);
-			ball.drawSelf(canvas);
-		}
-		for (Circle circle : circles) {
-			circle.drawSelf(canvas);
+			for (Drawable drawable : drawables) {
+				drawable.drawSelf(canvas);
+			}
 		}
 		if (ball.isLose) {
 			showLoseMessage(canvas);
@@ -91,6 +95,11 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		if (canvas != null) {
 			holder.unlockCanvasAndPost(canvas);
 		}
+	}
+
+	public void removeCircle(Circle circle) {
+		drawables.remove(circle);
+		circles.remove(circle);
 	}
 
 	private void showLoseMessage(Canvas canvas) {

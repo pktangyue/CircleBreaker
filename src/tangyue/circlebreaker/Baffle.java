@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class Baffle {
+public class Baffle implements Drawable{
 	float left;
 	float bottom;
 	float v = 0;// 速度
@@ -20,12 +20,14 @@ public class Baffle {
 		paint.setAntiAlias(true);
 	}
 
+	@Override
 	public void init(Canvas canvas) {
 		this.bottom = view.height - 50;
 		this.left = (view.width - WIDTH) / 2;
 		drawSelf(canvas);
 	}
 
+	@Override
 	public void drawSelf(Canvas canvas) {
 		canvas.drawRect(left, bottom - HEIGHT, left + WIDTH, bottom, paint);
 	}

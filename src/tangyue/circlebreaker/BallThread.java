@@ -40,7 +40,7 @@ public class BallThread extends Thread {
 			if (Math.pow(circles.get(i).x - x, 2)
 					+ Math.pow(circles.get(i).y - y, 2) <= Math.pow(Ball.RADIUS
 					+ circles.get(i).radius, 2)) {
-				circles.remove(i);
+				view.removeCircle(circles.get(i));
 			}
 		}
 	}

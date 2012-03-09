@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class Circle {
+public class Circle implements Drawable{
 	float x;
 	float y;
 	float radius;
@@ -22,8 +22,14 @@ public class Circle {
 		paint.setStrokeWidth(3);
 		paint.setColor(color);
 	}
-
+	
+	@Override
 	public void drawSelf(Canvas canvas) {
 		canvas.drawCircle(x, y, radius, paint);
+	}
+
+	@Override
+	public void init(Canvas canvas) {
+		drawSelf(canvas);
 	}
 }

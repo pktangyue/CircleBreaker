@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class Ball {
+public class Ball implements Drawable {
 	float x;
 	float y;
 	float yv = -50f; // 负数表示向上
@@ -21,12 +21,14 @@ public class Ball {
 		paint.setAntiAlias(true);
 	}
 
+	@Override
 	public void init(Canvas canvas) {
 		this.x = view.width / 2;
 		this.y = view.baffle.bottom - RADIUS - Baffle.HEIGHT;
 		drawSelf(canvas);
 	}
 
+	@Override
 	public void drawSelf(Canvas canvas) {
 		canvas.drawCircle(x, y, RADIUS, paint);
 	}
