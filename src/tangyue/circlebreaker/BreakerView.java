@@ -11,55 +11,55 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
-	SurfaceHolder holder;
-	int width;
-	int height;
-	String fps = "FPS:N/A";
-	Baffle baffle;
-	Ball ball;
-	BreakerSensor sensor;
-	ArrayList<Circle> circles = new ArrayList<Circle>();
-	ArrayList<Drawable> drawables = new ArrayList<Drawable>();
-
+	private SurfaceHolder holder;
+	private Baffle baffle;
+	private Ball ball;
+	private BreakerSensor sensor;
+	private Message message;
+	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
 	private DrawThread drawThread;
 	private BallThread ballThread;
 	private BaffleThread baffleThread;
 	private Canvas canvas = null;
 	private boolean isStart = false;
 
-	public BreakerView(Context context, int width, int height) {
+	String fps = "FPS:N/A";
+
+	public BreakerView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
-		this.width = width;
-		this.height = height;
 		this.sensor = BreakerSensor.getInstance(context);
 		holder = getHolder();
 		holder.addCallback(this);
-		initCircle();
+		initCircles();
 		initBaffle();
 		initBall();
+		initMessage();
 		drawThread = new DrawThread(this);
 	}
 
 	private void initBaffle() {
-		baffle = new Baffle(this);
+		baffle = Baffle.getInstance(this);
 		baffleThread = new BaffleThread(this);
 		drawables.add(baffle);
 	}
 
 	private void initBall() {
-		ball = new Ball(this);
+		ball = Ball.getInstance(this);
 		ballThread = new BallThread(this);
 		drawables.add(ball);
 	}
 
-	private void initCircle() {
-		circles.add(new Circle(50, 420, 30, Color.RED));
-		circles.add(new Circle(145, 350, 30, Color.RED));
-		circles.add(new Circle(240, 300, 30, Color.RED));
-		circles.add(new Circle(335, 350, 30, Color.RED));
-		circles.add(new Circle(430, 420, 30, Color.RED));
-		drawables.addAll(circles);
+	private void initCircles() {
+		drawables.add(new Circle(50, 420, 30, Color.RED));
+		drawables.add(new Circle(145, 350, 30, Color.RED));
+		drawables.add(new Circle(240, 300, 30, Color.RED));
+		drawables.add(new Circle(335, 350, 30, Color.RED));
+		drawables.add(new Circle(430, 420, 30, Color.RED));
+	}
+
+	private void initMessage() {
+		message = new Message(this);
+		drawables.add(message);
 	}
 
 	private void destoryBall() {
@@ -79,17 +79,12 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		canvas = holder.lockCanvas();
 		// 清空canvas
 		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-		if (!isStart) {
-			for (Drawable drawable : drawables) {
+		for (Drawable drawable : drawables) {
+			if (!isStart) {
 				drawable.init(canvas);
-			}
-		} else {
-			for (Drawable drawable : drawables) {
+			} else {
 				drawable.drawSelf(canvas);
 			}
-		}
-		if (ball.isLose) {
-			showLoseMessage(canvas);
 		}
 		printFPS(canvas);
 		if (canvas != null) {
@@ -97,33 +92,50 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	public void removeCircle(Circle circle) {
-		drawables.remove(circle);
-		circles.remove(circle);
-	}
-
-	private void showLoseMessage(Canvas canvas) {
-		Paint paint = new Paint();
-		paint.setColor(Color.RED);
-		paint.setTextSize(50);
-		canvas.drawText("lose", width / 2, height / 2, paint);
+	// 检查球和圆圈的碰撞
+	public void checkEliminate(float x, float y) {
+		for (int i = 0; i < drawables.size(); i++) {
+			if (drawables.get(i) instanceof Circle) {
+				Circle circle = (Circle) drawables.get(i);
+				if (Math.pow(circle.getX() - x, 2)
+						+ Math.pow(circle.getY() - y, 2) <= Math.pow(
+						Ball.RADIUS + circle.getRadius(), 2)) {
+					drawables.remove(i);
+					break;// 发生一次碰撞就退出(不可能同时碰到2个)
+				}
+			}
+		}
 	}
 
 	public void printFPS(Canvas canvas) {
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
-		Object[] arr = { fps, ball.x, ball.y };
+		Object[] arr = { fps, ball.getX(), ball.getY(), ball.getVX(),
+				ball.getVY(), ball.isLose() };
 		for (int i = 0; i < arr.length; i++) {
 			canvas.drawText(arr[i].toString(), 30, 30 * (i + 1), paint);
 		}
+	}
 
+	public Baffle getBaffle() {
+		return baffle;
+	}
+
+	public Ball getBall() {
+		return ball;
+	}
+
+	public BreakerSensor getSensor() {
+		return sensor;
+	}
+
+	public ArrayList<Drawable> getDrawables() {
+		return drawables;
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		int action = event.getAction();
-		// x = event.getX();
-		// y = event.getY();
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
 			isStart = true;
@@ -140,13 +152,10 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		// TODO Auto-generated method stub
 		if (!drawThread.isAlive()) {
 			drawThread.start();
 		}
@@ -157,7 +166,6 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		// TODO Auto-generated method stub
 		baffleThread.flag = ballThread.flag = drawThread.flag = false;
 		ballThread = null;
 		drawThread = null;

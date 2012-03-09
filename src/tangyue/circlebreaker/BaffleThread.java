@@ -11,8 +11,8 @@ public class BaffleThread extends Thread {
 
 	public BaffleThread(BreakerView view) {
 		this.view = view;
-		this.baffle = view.baffle;
-		this.sensor = view.sensor;
+		this.baffle = view.getBaffle();
+		this.sensor = view.getSensor();
 		this.flag = true;
 	}
 
@@ -21,26 +21,28 @@ public class BaffleThread extends Thread {
 		while (flag) {
 			current = System.nanoTime();
 			float timespan = (float) (current - start) / 1000 / 1000 / 100;
-			baffle.v = calculateV();
-			baffle.left = calculateLeft(timespan);
+			calculateV();
+			calculateLeft(timespan);
 			start = current;
 		}
 	}
 
-	public float calculateV() {
-		if (sensor == null)
-			return 0;
-		return sensor.ratioX * 30;
+	public void calculateV() {
+		if (sensor == null) {
+			baffle.setV(0);
+			return;
+		}
+		baffle.setV(sensor.ratioX * 30);
 	}
 
-	public float calculateLeft(float timespan) {
-		float tmpLeft = baffle.left + timespan * baffle.v;
+	public void calculateLeft(float timespan) {
+		float tmpLeft = baffle.getLeft() + timespan * baffle.getV();
 		if (tmpLeft < 0) {
-			return 0;
+			tmpLeft = 0;
 		}
-		if (tmpLeft > view.width - Baffle.WIDTH) {
-			return view.width - Baffle.WIDTH;
+		if (tmpLeft > view.getWidth() - Baffle.WIDTH) {
+			tmpLeft = view.getWidth() - Baffle.WIDTH;
 		}
-		return tmpLeft;
+		baffle.setLeft(tmpLeft);
 	}
 }

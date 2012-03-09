@@ -1,21 +1,18 @@
 package tangyue.circlebreaker;
 
-import java.util.ArrayList;
-
 public class BallThread extends Thread {
 	private BreakerView view;
 	private Ball ball;
 	private Baffle baffle;
-	private ArrayList<Circle> circles;
 	private long current;
 	private long start;
+
 	public boolean flag = false;
 
 	public BallThread(BreakerView view) {
 		this.view = view;
-		this.ball = view.ball;
-		this.baffle = view.baffle;
-		this.circles = view.circles;
+		this.ball = view.getBall();
+		this.baffle = view.getBaffle();
 		this.flag = true;
 	}
 
@@ -24,81 +21,73 @@ public class BallThread extends Thread {
 		while (flag) {
 			current = System.nanoTime();
 			float timespan = (float) (current - start) / 1000 / 1000 / 100;
-			ball.isLose = isLose(timespan);
-			if (ball.isLose && ball.y > 1500) {
+			checkLose(timespan);
+			if (ball.isLose() && ball.getY() > 1500) {
 				view.reset();
 			}
-			ball.y = calculateY(timespan);
-			ball.x = calculateX(timespan);
-			checkEliminate(ball.x, ball.y);
+			calculateY(timespan);
+			calculateX(timespan);
+			view.checkEliminate(ball.getX(), ball.getY());
 			start = current;
 		}
 	}
 
-	public void checkEliminate(float x, float y) {
-		for (int i = 0; i < circles.size(); i++) {
-			if (Math.pow(circles.get(i).x - x, 2)
-					+ Math.pow(circles.get(i).y - y, 2) <= Math.pow(Ball.RADIUS
-					+ circles.get(i).radius, 2)) {
-				view.removeCircle(circles.get(i));
-			}
-		}
-	}
-
-	public float calculateY(float timespan) {
-		float span = timespan * ball.yv;
-		float tmpTop = ball.y + span;
+	public void calculateY(float timespan) {
+		float span = timespan * ball.getVY();
+		float tmpTop = ball.getY() + span;
 		if (tmpTop < Ball.RADIUS) {
-			ball.yv = -ball.yv;
-			return 2 * Ball.RADIUS - tmpTop;
-		} else if (tmpTop + Ball.RADIUS > baffle.bottom && !ball.isLose) {
-			ball.yv = -ball.yv;
-			ball.xv = calculateXV(timespan);
-			ball.yv = calculateYV();
-			return 2 * baffle.bottom - 2 * Ball.RADIUS - tmpTop;
+			ball.reverseVY();
+			tmpTop = 2 * Ball.RADIUS - tmpTop;
+		} else if (tmpTop + Ball.RADIUS > baffle.getBottom() && !ball.isLose()) {
+			calculateVY();
+			calculateXV(timespan);
+			tmpTop = 2 * baffle.getBottom() - 2 * Ball.RADIUS - tmpTop;
 		}
-		return tmpTop;
+		ball.setY(tmpTop);
 	}
 
-	public float calculateX(float timespan) {
-		float span = timespan * ball.xv;
-		float tmpLeft = ball.x + span;
+	public void calculateX(float timespan) {
+		float span = timespan * ball.getVX();
+		float tmpLeft = ball.getX() + span;
 		if (tmpLeft - Ball.RADIUS < 0) {
-			ball.xv = -ball.xv;
-			return 2 * Ball.RADIUS - tmpLeft;
-		} else if (tmpLeft + Ball.RADIUS > view.width) {
-			ball.xv = -ball.xv;
-			return 2 * view.width - 2 * Ball.RADIUS - tmpLeft;
+			ball.reverseVX();
+			tmpLeft = 2 * Ball.RADIUS - tmpLeft;
+		} else if (tmpLeft + Ball.RADIUS > view.getWidth()) {
+			ball.reverseVX();
+			tmpLeft = 2 * view.getWidth() - 2 * Ball.RADIUS - tmpLeft;
 		}
-		return tmpLeft;
+		ball.setX(tmpLeft);
 	}
 
-	public float calculateXV(float timespan) {
-		float deltaT = (baffle.bottom - ball.y - Ball.RADIUS) / ball.xv;
+	public void calculateXV(float timespan) {
+		float deltaT = (baffle.getBottom() - ball.getY() - Ball.RADIUS)
+				/ ball.getVX();
 		if (Float.isNaN(deltaT) || Float.isInfinite(deltaT)) {
 			deltaT = 0;
 		}
-		float tmpLeft = ball.x + deltaT * ball.xv;
-		return ball.xv = tmpLeft - baffle.left - Baffle.WIDTH / 2;
+		float tmpLeft = ball.getX() + deltaT * ball.getVX();
+		ball.setVX(tmpLeft - baffle.getLeft() - Baffle.WIDTH / 2);
 	}
 
-	public float calculateYV() {
-		return ball.yv;
+	public void calculateVY() {
+		ball.reverseVY();
 	}
 
-	public boolean isLose(float timespan) {
-		if (ball.isLose) {
-			return true;// 已经丢失就不再检查
+	public void checkLose(float timespan) {
+		if (ball.isLose()) {
+			ball.setLose(true);// 已经丢失就不再检查
+			return;
 		}
-		float spanY = timespan * ball.yv;
-		float spanX = timespan * ball.xv;
-		float tmpTop = ball.y + spanY;
-		float tmpLeft = ball.x + spanX;
-		if (tmpTop + Ball.RADIUS > baffle.bottom
-				&& (tmpLeft + Ball.RADIUS < baffle.left || (tmpLeft
-						- Ball.RADIUS > baffle.left + Baffle.WIDTH))) {
-			return true;
+		float spanY = timespan * ball.getVY();
+		float spanX = timespan * ball.getVX();
+		float tmpTop = ball.getY() + spanY;
+		float tmpLeft = ball.getX() + spanX;
+		if (tmpTop + Ball.RADIUS > baffle.getBottom()
+				&& (tmpLeft + Ball.RADIUS < baffle.getLeft() || (tmpLeft
+						- Ball.RADIUS > baffle.getLeft() + Baffle.WIDTH))) {
+			ball.setLose(true);
+			return;
 		}
-		return false;
+		ball.setLose(false);
 	}
 }
