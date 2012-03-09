@@ -14,7 +14,7 @@ public class Ball implements Drawable {
 	private float vy = -50f; // 负数表示向上
 	private float vx = 0;
 	private boolean isLose = false;
-	
+
 	private static Ball ball;
 
 	public Ball(BreakerView view) {
@@ -23,7 +23,7 @@ public class Ball implements Drawable {
 		paint.setColor(Color.WHITE);
 		paint.setAntiAlias(true);
 	}
-	
+
 	public static Ball getInstance(BreakerView view) {
 		if (ball == null) {
 			return new Ball(view);
@@ -33,7 +33,7 @@ public class Ball implements Drawable {
 
 	@Override
 	public void init(Canvas canvas) {
-		this.x = view.getWidth() / 2;
+		this.x = view.getBaffle().getLeft() + Baffle.WIDTH / 2;
 		this.y = view.getBaffle().getBottom() - RADIUS - Baffle.HEIGHT;
 		drawSelf(canvas);
 	}

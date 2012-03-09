@@ -32,14 +32,20 @@ public class Baffle implements Drawable {
 
 	@Override
 	public void init(Canvas canvas) {
-		this.bottom = view.getHeight() - 50;
-		this.left = (view.getWidth() - WIDTH) / 2;
+		if (this.bottom == 0) {
+			this.bottom = view.getHeight() - 50;
+			this.left = (view.getWidth() - WIDTH) / 2;
+		}
 		drawSelf(canvas);
 	}
 
 	@Override
 	public void drawSelf(Canvas canvas) {
 		canvas.drawRect(left, bottom - HEIGHT, left + WIDTH, bottom, paint);
+	}
+
+	public void reset() {
+		this.bottom = 0;
 	}
 
 	public float getLeft() {

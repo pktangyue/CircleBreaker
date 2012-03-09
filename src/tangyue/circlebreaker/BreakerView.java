@@ -71,6 +71,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 
 	public void reset() {
 		isStart = false;
+		baffle.reset();
 		destoryBall();
 		initBall();
 	}
