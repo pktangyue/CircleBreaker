@@ -84,16 +84,26 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		for (Circle circle : circles) {
 			circle.drawSelf(canvas);
 		}
+		if (ball.isLose) {
+			showLoseMessage(canvas);
+		}
 		printFPS(canvas);
 		if (canvas != null) {
 			holder.unlockCanvasAndPost(canvas);
 		}
 	}
 
+	private void showLoseMessage(Canvas canvas) {
+		Paint paint = new Paint();
+		paint.setColor(Color.RED);
+		paint.setTextSize(50);
+		canvas.drawText("lose", width / 2, height / 2, paint);
+	}
+
 	public void printFPS(Canvas canvas) {
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
-		Object[] arr = { fps, baffle.left, sensor.ratioX, baffle.v };
+		Object[] arr = { fps, ball.x, ball.y };
 		for (int i = 0; i < arr.length; i++) {
 			canvas.drawText(arr[i].toString(), 30, 30 * (i + 1), paint);
 		}

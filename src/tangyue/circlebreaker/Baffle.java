@@ -21,7 +21,7 @@ public class Baffle {
 	}
 
 	public void init(Canvas canvas) {
-		this.bottom = view.height - 20;
+		this.bottom = view.height - 50;
 		this.left = (view.width - WIDTH) / 2;
 		drawSelf(canvas);
 	}

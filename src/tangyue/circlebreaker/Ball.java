@@ -8,15 +8,14 @@ public class Ball {
 	float x;
 	float y;
 	float yv = -50f; // 负数表示向上
-	float xv = -20f;
-	boolean isAlive = false;
+	float xv = 0;
+	boolean isLose = false;
 	final static float RADIUS = 10;
 	private BreakerView view;
 	private Paint paint = null;
 
 	public Ball(BreakerView view) {
 		this.view = view;
-		this.isAlive = true;
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
 		paint.setAntiAlias(true);

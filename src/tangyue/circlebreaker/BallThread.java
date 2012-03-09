@@ -9,7 +9,6 @@ public class BallThread extends Thread {
 	private ArrayList<Circle> circles;
 	private long current;
 	private long start;
-
 	public boolean flag = false;
 
 	public BallThread(BreakerView view) {
@@ -25,7 +24,8 @@ public class BallThread extends Thread {
 		while (flag) {
 			current = System.nanoTime();
 			float timespan = (float) (current - start) / 1000 / 1000 / 100;
-			if (isLose(timespan)) {
+			ball.isLose = isLose(timespan);
+			if (ball.isLose && ball.y > 1500) {
 				view.reset();
 			}
 			ball.y = calculateY(timespan);
@@ -51,7 +51,7 @@ public class BallThread extends Thread {
 		if (tmpTop < Ball.RADIUS) {
 			ball.yv = -ball.yv;
 			return 2 * Ball.RADIUS - tmpTop;
-		} else if (tmpTop + Ball.RADIUS > baffle.bottom) {
+		} else if (tmpTop + Ball.RADIUS > baffle.bottom && !ball.isLose) {
 			ball.yv = -ball.yv;
 			ball.xv = calculateXV(timespan);
 			ball.yv = calculateYV();
@@ -75,6 +75,9 @@ public class BallThread extends Thread {
 
 	public float calculateXV(float timespan) {
 		float deltaT = (baffle.bottom - ball.y - Ball.RADIUS) / ball.xv;
+		if (Float.isNaN(deltaT) || Float.isInfinite(deltaT)) {
+			deltaT = 0;
+		}
 		float tmpLeft = ball.x + deltaT * ball.xv;
 		return ball.xv = tmpLeft - baffle.left - Baffle.WIDTH / 2;
 	}
@@ -84,6 +87,9 @@ public class BallThread extends Thread {
 	}
 
 	public boolean isLose(float timespan) {
+		if (ball.isLose) {
+			return true;// 已经丢失就不再检查
+		}
 		float spanY = timespan * ball.yv;
 		float spanX = timespan * ball.xv;
 		float tmpTop = ball.y + spanY;

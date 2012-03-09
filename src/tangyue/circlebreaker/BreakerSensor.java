@@ -34,7 +34,7 @@ public class BreakerSensor {
 			@Override
 			public void onSensorChanged(final SensorEvent event) {
 				if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-					ratioX = divideLevel(event.values[0]);// 使方向和二维坐标一致
+					ratioX = limitRatio(event.values[0]);// 使方向和二维坐标一致
 				}
 			}
 		};
@@ -43,7 +43,7 @@ public class BreakerSensor {
 				SensorManager.SENSOR_DELAY_GAME);
 	}
 
-	private float divideLevel(float value) {
+	private float limitRatio(float value) {
 		if (value > 4) {
 			value = 4;
 		} else if (value < -4) {
