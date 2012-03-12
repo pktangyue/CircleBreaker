@@ -14,6 +14,8 @@ public class MainActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE); // 无标题
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN); // 全屏
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// 禁止休眠
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // 固定垂直
 		BreakerView view = new BreakerView(this);
 		setContentView(view);
