@@ -55,6 +55,11 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		drawables.add(new Circle(240, 300, 30, Color.RED));
 		drawables.add(new Circle(335, 350, 30, Color.RED));
 		drawables.add(new Circle(430, 420, 30, Color.RED));
+		drawables.add(new Circle(50, 520, 30, Color.RED));
+		drawables.add(new Circle(145, 450, 30, Color.RED));
+		drawables.add(new Circle(240, 400, 30, Color.RED));
+		drawables.add(new Circle(335, 450, 30, Color.RED));
+		drawables.add(new Circle(430, 520, 30, Color.RED));
 	}
 
 	private void initMessage() {
@@ -80,12 +85,18 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		canvas = holder.lockCanvas();
 		// 清空canvas
 		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-		for (Drawable drawable : drawables) {
-			if (!isStart) {
-				drawable.init(canvas);
-			} else {
-				drawable.drawSelf(canvas);
+		try {
+			synchronized (drawables) {
+				for (int i = 0; i < drawables.size(); i++) {
+					Drawable drawable = drawables.get(i);
+					if (!isStart) {
+						drawable.init(canvas);
+					} else {
+						drawable.drawSelf(canvas);
+					}
+				}
 			}
+		} catch (IndexOutOfBoundsException ec) {
 		}
 		printFPS(canvas);
 		if (canvas != null) {
@@ -95,17 +106,35 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 
 	// 检查球和圆圈的碰撞
 	public void checkEliminate(float x, float y) {
-		for (int i = 0; i < drawables.size(); i++) {
-			if (drawables.get(i) instanceof Circle) {
-				Circle circle = (Circle) drawables.get(i);
-				if (Math.pow(circle.getX() - x, 2)
-						+ Math.pow(circle.getY() - y, 2) <= Math.pow(
-						Ball.RADIUS + circle.getRadius(), 2)) {
-					drawables.remove(i);
-					break;// 发生一次碰撞就退出(不可能同时碰到2个)
+		synchronized (drawables) {
+			try {
+				for (int i = 0; i < drawables.size(); i++) {
+					Drawable drawable = drawables.get(i);
+					if (drawable instanceof Circle) {
+						Circle circle = (Circle) drawable;
+						if (circle.isEliminated()) {
+							continue;
+						}
+						if (Math.pow(circle.getX() - x, 2)
+								+ Math.pow(circle.getY() - y, 2) <= Math.pow(
+								Ball.RADIUS + circle.getRadius(), 2)) {
+							circle.breakout();
+							CircleThread circleThread = new CircleThread(this,
+									circle);
+							circleThread.start();
+							break;// 发生一次碰撞就退出(不可能同时碰到2个)
+						}
+					}
 				}
+			} catch (IndexOutOfBoundsException ex) {
 			}
 		}
+	}
+
+	public void removeCircle(Circle circle, CircleThread thread) {
+		thread.flag = false;
+		thread = null;
+		drawables.remove(circle);
 	}
 
 	public void printFPS(Canvas canvas) {
