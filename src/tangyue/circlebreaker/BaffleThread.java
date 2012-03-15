@@ -17,10 +17,10 @@ public class BaffleThread extends Thread {
 	}
 
 	public void run() {
-		start = System.nanoTime();
+		start = System.currentTimeMillis();
 		while (flag) {
-			current = System.nanoTime();
-			float timespan = (float) (current - start) / 1000 / 1000 / 100;
+			current = System.currentTimeMillis();
+			float timespan = (current - start) / 100.0f;
 			calculateV();
 			calculateLeft(timespan);
 			start = current;
@@ -29,18 +29,17 @@ public class BaffleThread extends Thread {
 
 	public void calculateV() {
 		if (sensor == null) {
-			baffle.setV(0);
+			baffle.setV(0.0f);
 			return;
 		}
-		baffle.setV(sensor.ratioX * 30);
+		baffle.setV(sensor.ratioX * 30.0f);
 	}
 
 	public void calculateLeft(float timespan) {
 		float tmpLeft = baffle.getLeft() + timespan * baffle.getV();
-		if (tmpLeft < 0) {
-			tmpLeft = 0;
-		}
-		if (tmpLeft > view.getWidth() - Baffle.WIDTH) {
+		if (tmpLeft < 0.0f) {
+			tmpLeft = 0.0f;
+		} else if (tmpLeft > view.getWidth() - Baffle.WIDTH) {
 			tmpLeft = view.getWidth() - Baffle.WIDTH;
 		}
 		baffle.setLeft(tmpLeft);

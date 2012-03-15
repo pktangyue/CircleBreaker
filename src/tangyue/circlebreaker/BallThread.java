@@ -17,12 +17,12 @@ public class BallThread extends Thread {
 	}
 
 	public void run() {
-		start = System.nanoTime();
+		start = System.currentTimeMillis();
 		while (flag) {
-			current = System.nanoTime();
-			float timespan = (float) (current - start) / 1000 / 1000 / 100;
+			current = System.currentTimeMillis();
+			float timespan = (float) (current - start) / 100.0f;
 			checkLose(timespan);
-			if (ball.isLose() && ball.getY() > 1500) {
+			if (ball.isLose() && ball.getY() > 1500.0f) {
 				view.reset();
 			}
 			calculateY(timespan);
@@ -37,11 +37,11 @@ public class BallThread extends Thread {
 		float tmpTop = ball.getY() + span;
 		if (tmpTop < Ball.RADIUS) {
 			ball.reverseVY();
-			tmpTop = 2 * Ball.RADIUS - tmpTop;
+			tmpTop = 2.0f * Ball.RADIUS - tmpTop;
 		} else if (tmpTop + Ball.RADIUS > baffle.getBottom() && !ball.isLose()) {
 			calculateVY();
 			calculateXV(timespan);
-			tmpTop = 2 * baffle.getBottom() - 2 * Ball.RADIUS - tmpTop;
+			tmpTop = 2.0f * baffle.getBottom() - 2.0f * Ball.RADIUS - tmpTop;
 		}
 		ball.setY(tmpTop);
 	}
@@ -49,12 +49,12 @@ public class BallThread extends Thread {
 	public void calculateX(float timespan) {
 		float span = timespan * ball.getVX();
 		float tmpLeft = ball.getX() + span;
-		if (tmpLeft - Ball.RADIUS < 0) {
+		if (tmpLeft - Ball.RADIUS < 0.0f) {
 			ball.reverseVX();
-			tmpLeft = 2 * Ball.RADIUS - tmpLeft;
+			tmpLeft = 2.0f * Ball.RADIUS - tmpLeft;
 		} else if (tmpLeft + Ball.RADIUS > view.getWidth()) {
 			ball.reverseVX();
-			tmpLeft = 2 * view.getWidth() - 2 * Ball.RADIUS - tmpLeft;
+			tmpLeft = 2.0f * view.getWidth() - 2.0f * Ball.RADIUS - tmpLeft;
 		}
 		ball.setX(tmpLeft);
 	}
@@ -63,10 +63,10 @@ public class BallThread extends Thread {
 		float deltaT = (baffle.getBottom() - ball.getY() - Ball.RADIUS)
 				/ ball.getVX();
 		if (Float.isNaN(deltaT) || Float.isInfinite(deltaT)) {
-			deltaT = 0;
+			deltaT = 0.0f;
 		}
 		float tmpLeft = ball.getX() + deltaT * ball.getVX();
-		ball.setVX(tmpLeft - baffle.getLeft() - Baffle.WIDTH / 2);
+		ball.setVX(tmpLeft - baffle.getLeft() - Baffle.WIDTH / 2.0f);
 	}
 
 	public void calculateVY() {

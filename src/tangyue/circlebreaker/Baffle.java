@@ -5,12 +5,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 public class Baffle implements Drawable {
-	final static float WIDTH = 100;
-	final static float HEIGHT = 5;
+	final static float WIDTH = 100.0f;
+	final static float HEIGHT = 5.0f;
 
 	private float left;
 	private float bottom;
-	private float v = 0;// 速度
+	private float v = 0.0f;// 速度
 	private BreakerView view;
 	private Paint paint = null;
 
@@ -32,9 +32,9 @@ public class Baffle implements Drawable {
 
 	@Override
 	public void init(Canvas canvas) {
-		if (this.bottom == 0) {
-			this.bottom = view.getHeight() - 50;
-			this.left = (view.getWidth() - WIDTH) / 2;
+		if (this.bottom == 0.0f) {
+			this.bottom = view.getHeight() - 50.0f;
+			this.left = (view.getWidth() - WIDTH) / 2.0f;
 		}
 		drawSelf(canvas);
 	}
@@ -45,26 +45,26 @@ public class Baffle implements Drawable {
 	}
 
 	public void reset() {
-		this.bottom = 0;
+		this.bottom = 0.0f;
 	}
 
-	public float getLeft() {
+	public final float getLeft() {
 		return left;
 	}
 
-	public void setLeft(float left) {
+	public final void setLeft(float left) {
 		this.left = left;
 	}
 
-	public float getV() {
+	public final float getV() {
 		return v;
 	}
 
-	public void setV(float v) {
+	public final void setV(float v) {
 		this.v = v;
 	}
 
-	public float getBottom() {
+	public final float getBottom() {
 		return bottom;
 	}
 }

@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.os.Debug;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -55,11 +56,18 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		drawables.add(new Circle(240, 300, 30, Color.RED));
 		drawables.add(new Circle(335, 350, 30, Color.RED));
 		drawables.add(new Circle(430, 420, 30, Color.RED));
+
 		drawables.add(new Circle(50, 520, 30, Color.RED));
 		drawables.add(new Circle(145, 450, 30, Color.RED));
 		drawables.add(new Circle(240, 400, 30, Color.RED));
 		drawables.add(new Circle(335, 450, 30, Color.RED));
 		drawables.add(new Circle(430, 520, 30, Color.RED));
+
+		drawables.add(new Circle(50, 320, 30, Color.RED));
+		drawables.add(new Circle(145, 250, 30, Color.RED));
+		drawables.add(new Circle(240, 200, 30, Color.RED));
+		drawables.add(new Circle(335, 250, 30, Color.RED));
+		drawables.add(new Circle(430, 320, 30, Color.RED));
 	}
 
 	private void initMessage() {
@@ -85,8 +93,8 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		canvas = holder.lockCanvas();
 		// 清空canvas
 		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-		try {
-			synchronized (drawables) {
+		synchronized (drawables) {
+			try {
 				for (int i = 0; i < drawables.size(); i++) {
 					Drawable drawable = drawables.get(i);
 					if (!isStart) {
@@ -95,8 +103,9 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 						drawable.drawSelf(canvas);
 					}
 				}
+
+			} catch (IndexOutOfBoundsException ec) {
 			}
-		} catch (IndexOutOfBoundsException ec) {
 		}
 		printFPS(canvas);
 		if (canvas != null) {
@@ -115,9 +124,10 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 						if (circle.isEliminated()) {
 							continue;
 						}
-						if (Math.pow(circle.getX() - x, 2)
-								+ Math.pow(circle.getY() - y, 2) <= Math.pow(
-								Ball.RADIUS + circle.getRadius(), 2)) {
+						float deltaX = circle.getX() - x;
+						float deltaY = circle.getY() - y;
+						float span = Ball.RADIUS + circle.getRadius();
+						if (deltaX * deltaX + deltaY * deltaY <= span * span) {
 							circle.breakout();
 							CircleThread circleThread = new CircleThread(this,
 									circle);
@@ -140,26 +150,25 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	public void printFPS(Canvas canvas) {
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
-		Object[] arr = { fps, ball.getX(), ball.getY(), ball.getVX(),
-				ball.getVY(), ball.isLose() };
+		Object[] arr = { fps };
 		for (int i = 0; i < arr.length; i++) {
 			canvas.drawText(arr[i].toString(), 30, 30 * (i + 1), paint);
 		}
 	}
 
-	public Baffle getBaffle() {
+	public final Baffle getBaffle() {
 		return baffle;
 	}
 
-	public Ball getBall() {
+	public final Ball getBall() {
 		return ball;
 	}
 
-	public BreakerSensor getSensor() {
+	public final BreakerSensor getSensor() {
 		return sensor;
 	}
 
-	public ArrayList<Drawable> getDrawables() {
+	public final ArrayList<Drawable> getDrawables() {
 		return drawables;
 	}
 
@@ -192,6 +201,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		if (!baffleThread.isAlive()) {
 			baffleThread.start();
 		}
+		Debug.startMethodTracing("yourActivityTrace");
 	}
 
 	@Override
@@ -200,6 +210,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		ballThread = null;
 		drawThread = null;
 		baffleThread = null;
+		Debug.stopMethodTracing();
 	}
 
 }

@@ -7,8 +7,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 public class BreakerSensor {
-	float ratioX = 0;
-	float ratioY = 0;
+	float ratioX = 0.0f;
+	float ratioY = 0.0f;
 	private static BreakerSensor sensor = null;
 
 	private BreakerSensor(Context context) {
@@ -40,14 +40,14 @@ public class BreakerSensor {
 		};
 		mySensorManager.registerListener(mySensorEventListener,
 				mySensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-				SensorManager.SENSOR_DELAY_GAME);
+				SensorManager.SENSOR_DELAY_NORMAL);
 	}
 
 	private float limitRatio(float value) {
-		if (value > 4) {
-			value = 4;
-		} else if (value < -4) {
-			value = -4;
+		if (value > 4.0f) {
+			value = 4.0f;
+		} else if (value < -4.0f) {
+			value = -4.0f;
 		}
 		return -value;// 使方向和二维坐标系一致
 	}

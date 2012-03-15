@@ -12,7 +12,7 @@ public class Circle implements Drawable {
 	private Paint textPaint;
 	private boolean isEliminated = false;
 	private float textSize = 10;
-	private float[] pts = new float[40];// 20个点
+	private float[] pts = new float[20];// 10个点
 
 	public Circle(float x, float y, float radius, int color) {
 		this.x = x;
@@ -33,31 +33,31 @@ public class Circle implements Drawable {
 		textPaint.setColor(color);
 	}
 
-	public float getX() {
+	public final float getX() {
 		return x;
 	}
 
-	public float getY() {
+	public final float getY() {
 		return y;
 	}
 
-	public float getRadius() {
+	public final float getRadius() {
 		return radius;
 	}
 
-	public boolean isEliminated() {
+	public final boolean isEliminated() {
 		return isEliminated;
 	}
 
-	public float[] getPts() {
+	public final float[] getPts() {
 		return pts;
 	}
 
-	public float getTextSize() {
+	public final float getTextSize() {
 		return textSize;
 	}
 
-	public void setTextSize(float textSize) {
+	public final void setTextSize(float textSize) {
 		this.textSize = textSize;
 	}
 

@@ -43,43 +43,43 @@ public class Ball implements Drawable {
 		canvas.drawCircle(x, y, RADIUS, paint);
 	}
 
-	public float getX() {
+	public final float getX() {
 		return x;
 	}
 
-	public void setX(float x) {
+	public final void setX(float x) {
 		this.x = x;
 	}
 
-	public float getY() {
+	public final float getY() {
 		return y;
 	}
 
-	public void setY(float y) {
+	public final void setY(float y) {
 		this.y = y;
 	}
 
-	public float getVY() {
+	public final float getVY() {
 		return vy;
 	}
 
-	public void setVY(float vy) {
+	public final void setVY(float vy) {
 		this.vy = vy;
 	}
 
-	public void reverseVY() {
+	public final void reverseVY() {
 		this.vy = -vy;
 	}
 
-	public float getVX() {
+	public final float getVX() {
 		return vx;
 	}
 
-	public void setVX(float vx) {
+	public final void setVX(float vx) {
 		this.vx = vx;
 	}
 
-	public void reverseVX() {
+	public final void reverseVX() {
 		this.vx = -vx;
 	}
 
