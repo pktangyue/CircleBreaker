@@ -34,7 +34,8 @@ public class BreakerSensor {
 			@Override
 			public void onSensorChanged(final SensorEvent event) {
 				if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-					ratioX = limitRatio(event.values[0]);// 使方向和二维坐标一致
+					ratioX = limitRatioX(event.values[0]);// 使方向和二维坐标一致
+					ratioY = limitRatioY(event.values[1]);
 				}
 			}
 		};
@@ -43,12 +44,22 @@ public class BreakerSensor {
 				SensorManager.SENSOR_DELAY_NORMAL);
 	}
 
-	private float limitRatio(float value) {
+	private float limitRatioX(float value) {
 		if (value > 4.0f) {
 			value = 4.0f;
 		} else if (value < -4.0f) {
 			value = -4.0f;
 		}
 		return -value;// 使方向和二维坐标系一致
+	}
+
+	private float limitRatioY(float value) {
+		value = value * 3f;
+		if (value > 3.0f) {
+			value = 3.0f;
+		} else if (value < -3.0f) {
+			value = -3.0f;
+		}
+		return 3.0f - value;
 	}
 }

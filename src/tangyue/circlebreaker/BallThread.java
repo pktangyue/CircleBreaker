@@ -6,6 +6,7 @@ public class BallThread extends Thread {
 	private Baffle baffle;
 	private long current;
 	private long start;
+	private BreakerSensor sensor;
 
 	public boolean flag = false;
 
@@ -13,6 +14,7 @@ public class BallThread extends Thread {
 		this.view = view;
 		this.ball = view.getBall();
 		this.baffle = view.getBaffle();
+		this.sensor = view.getSensor();
 		this.flag = true;
 	}
 
@@ -25,6 +27,7 @@ public class BallThread extends Thread {
 			if (ball.isLose() && ball.getY() > 1500.0f) {
 				view.reset();
 			}
+			calculateVY(timespan);
 			calculateY(timespan);
 			calculateX(timespan);
 			view.checkEliminate(ball.getX(), ball.getY());
@@ -33,14 +36,15 @@ public class BallThread extends Thread {
 	}
 
 	public void calculateY(float timespan) {
-		float span = timespan * ball.getVY();
+		float span = timespan * ball.getVY() - Ball.G * timespan * timespan
+				/ 2.0f;
 		float tmpTop = ball.getY() + span;
 		if (tmpTop < Ball.RADIUS) {
 			ball.reverseVY();
 			tmpTop = 2.0f * Ball.RADIUS - tmpTop;
 		} else if (tmpTop + Ball.RADIUS > baffle.getBottom() && !ball.isLose()) {
 			calculateVY();
-			calculateXV(timespan);
+			calculateVX(timespan);
 			tmpTop = 2.0f * baffle.getBottom() - 2.0f * Ball.RADIUS - tmpTop;
 		}
 		ball.setY(tmpTop);
@@ -59,7 +63,7 @@ public class BallThread extends Thread {
 		ball.setX(tmpLeft);
 	}
 
-	public void calculateXV(float timespan) {
+	public void calculateVX(float timespan) {
 		float deltaT = (baffle.getBottom() - ball.getY() - Ball.RADIUS)
 				/ ball.getVX();
 		if (Float.isNaN(deltaT) || Float.isInfinite(deltaT)) {
@@ -70,7 +74,11 @@ public class BallThread extends Thread {
 	}
 
 	public void calculateVY() {
-		ball.reverseVY();
+		ball.setVY(Ball.BASE_VY - sensor.ratioY * 5);
+	}
+
+	public void calculateVY(float timespan) {
+		ball.setVY(ball.getVY() + Ball.G * timespan);
 	}
 
 	public void checkLose(float timespan) {

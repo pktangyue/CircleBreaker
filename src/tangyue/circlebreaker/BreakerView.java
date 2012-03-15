@@ -12,6 +12,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
+	final static float BOTTOM_BLANK = 140f;
+
 	private SurfaceHolder holder;
 	private Baffle baffle;
 	private Ball ball;
@@ -150,7 +152,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	public void printFPS(Canvas canvas) {
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
-		Object[] arr = { fps };
+		Object[] arr = { fps, ball.getVY(), sensor.ratioY };
 		for (int i = 0; i < arr.length; i++) {
 			canvas.drawText(arr[i].toString(), 30, 30 * (i + 1), paint);
 		}

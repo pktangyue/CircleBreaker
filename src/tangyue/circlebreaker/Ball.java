@@ -6,15 +6,16 @@ import android.graphics.Paint;
 
 public class Ball implements Drawable {
 	final static float RADIUS = 10;
+	final static float BASE_VY = -30f;// 负数表示向上
+	final static float G = 3.0f;
 
 	private BreakerView view;
 	private Paint paint = null;
 	private float x;
 	private float y;
-	private float vy = -50f; // 负数表示向上
-	private float vx = 0;
+	private float vx = 0f;
+	private float vy = BASE_VY;
 	private boolean isLose = false;
-
 	private static Ball ball;
 
 	public Ball(BreakerView view) {
@@ -83,11 +84,11 @@ public class Ball implements Drawable {
 		this.vx = -vx;
 	}
 
-	public boolean isLose() {
+	public final boolean isLose() {
 		return isLose;
 	}
 
-	public void setLose(boolean isLose) {
+	public final void setLose(boolean isLose) {
 		this.isLose = isLose;
 	}
 }

@@ -33,8 +33,7 @@ public class Baffle implements Drawable {
 	@Override
 	public void init(Canvas canvas) {
 		if (this.bottom == 0.0f) {
-			this.bottom = view.getHeight() - 50.0f;
-			this.left = (view.getWidth() - WIDTH) / 2.0f;
+			reset();
 		}
 		drawSelf(canvas);
 	}
@@ -45,7 +44,8 @@ public class Baffle implements Drawable {
 	}
 
 	public void reset() {
-		this.bottom = 0.0f;
+		this.bottom = view.getHeight() - BreakerView.BOTTOM_BLANK;
+		this.left = (view.getWidth() - WIDTH) / 2.0f;
 	}
 
 	public final float getLeft() {
