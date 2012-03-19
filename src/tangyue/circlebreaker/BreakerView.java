@@ -19,6 +19,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	private Ball ball;
 	private BreakerSensor sensor;
 	private Message message;
+	private GameScore score;
 	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
 	private DrawThread drawThread;
 	private BallThread ballThread;
@@ -37,6 +38,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		initBaffle();
 		initBall();
 		initMessage();
+		initGameScore();
 		drawThread = new DrawThread(this);
 	}
 
@@ -53,11 +55,11 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void initCircles() {
-		drawables.add(new Circle(50, 420, 30, Color.RED));
-		drawables.add(new Circle(145, 350, 30, Color.RED));
-		drawables.add(new Circle(240, 300, 30, Color.RED));
-		drawables.add(new Circle(335, 350, 30, Color.RED));
-		drawables.add(new Circle(430, 420, 30, Color.RED));
+		drawables.add(new Circle(50, 420, 30, Color.BLUE));
+		drawables.add(new Circle(145, 350, 30, Color.BLUE));
+		drawables.add(new Circle(240, 300, 30, Color.BLUE));
+		drawables.add(new Circle(335, 350, 30, Color.BLUE));
+		drawables.add(new Circle(430, 420, 30, Color.BLUE));
 
 		drawables.add(new Circle(50, 520, 30, Color.RED));
 		drawables.add(new Circle(145, 450, 30, Color.RED));
@@ -65,16 +67,21 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		drawables.add(new Circle(335, 450, 30, Color.RED));
 		drawables.add(new Circle(430, 520, 30, Color.RED));
 
-		drawables.add(new Circle(50, 320, 30, Color.RED));
-		drawables.add(new Circle(145, 250, 30, Color.RED));
-		drawables.add(new Circle(240, 200, 30, Color.RED));
-		drawables.add(new Circle(335, 250, 30, Color.RED));
-		drawables.add(new Circle(430, 320, 30, Color.RED));
+		drawables.add(new Circle(50, 320, 30, Color.GREEN));
+		drawables.add(new Circle(145, 250, 30, Color.GREEN));
+		drawables.add(new Circle(240, 200, 30, Color.GREEN));
+		drawables.add(new Circle(335, 250, 30, Color.GREEN));
+		drawables.add(new Circle(430, 320, 30, Color.GREEN));
 	}
 
 	private void initMessage() {
 		message = new Message(this);
 		drawables.add(message);
+	}
+
+	private void initGameScore() {
+		score = new GameScore(this);
+		drawables.add(score);
 	}
 
 	private void destoryBall() {
@@ -152,7 +159,8 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	public void printFPS(Canvas canvas) {
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
-		Object[] arr = { fps, ball.getVY(), sensor.ratioY };
+		Object[] arr = { fps, ball.getVY(), sensor.ratioY,
+				GameScore.getTotalPoints() };
 		for (int i = 0; i < arr.length; i++) {
 			canvas.drawText(arr[i].toString(), 30, 30 * (i + 1), paint);
 		}

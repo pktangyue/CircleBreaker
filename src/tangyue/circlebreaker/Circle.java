@@ -8,16 +8,19 @@ public class Circle implements Drawable {
 	private float x;
 	private float y;
 	private float radius;
+	private int color;
 	private Paint paint;
 	private Paint textPaint;
 	private boolean isEliminated = false;
 	private float textSize = 10;
 	private float[] pts = new float[20];// 10个点
+	private int points;
 
 	public Circle(float x, float y, float radius, int color) {
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
+		this.color = color;
 		for (int i = 0; i < pts.length; i += 2) {
 			pts[i] = x;
 			pts[i + 1] = y;
@@ -66,7 +69,7 @@ public class Circle implements Drawable {
 		if (isEliminated) {
 			canvas.drawPoints(pts, paint);
 			textPaint.setTextSize(textSize);
-			canvas.drawText("50", x, y, textPaint);
+			canvas.drawText("" + points, x, y, textPaint);
 		} else {
 			canvas.drawCircle(x, y, radius, paint);
 		}
@@ -81,6 +84,6 @@ public class Circle implements Drawable {
 		isEliminated = true;
 		paint.setColor(Color.WHITE);
 		paint.setStrokeWidth(2);
+		points = GameScore.getPoint(color);
 	}
-
 }

@@ -92,6 +92,7 @@ public class BallThread extends Thread {
 			calculateVX(timespan);
 			tmpTop = 2.0f * baffle.getBottom() - 2.0f * Ball.RADIUS - tmpTop;
 			ball.setY(tmpTop);// 在initPathPoints需要先设定y
+			GameScore.reset();
 			initPathPoints();
 		} else {
 			calculateVY(timespan);
