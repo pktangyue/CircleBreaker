@@ -28,7 +28,8 @@ public class BallThread extends Thread {
 		start = System.currentTimeMillis();
 		while (flag) {
 			current = System.currentTimeMillis();
-			float timespan = (float) (current - start) / 100.0f;
+			float timespan = (float) (current - start)
+					/ GameTime.getTimeInterval();
 			if (ball.isLose() && ball.getY() > 1500.0f) {
 				view.reset();
 			}
@@ -69,8 +70,9 @@ public class BallThread extends Thread {
 		if (pathPoints.size() == 0)
 			return;
 		long pathCurrent = System.currentTimeMillis();
-		int interval = (int) ((pathCurrent - pathStart) / 100f / 0.5f);
-		for (int i = 0; i < interval - pathInterval; i++) {
+		int interval = (int) ((pathCurrent - pathStart)
+				/ GameTime.getTimeInterval() / 0.5f);
+		for (int i = 0; i < interval - pathInterval && pathPoints.size() > 0; i++) {
 			pathPoints.remove(0);
 			pathPoints.remove(0);
 		}
@@ -92,7 +94,7 @@ public class BallThread extends Thread {
 			calculateVX(timespan);
 			tmpTop = 2.0f * baffle.getBottom() - 2.0f * Ball.RADIUS - tmpTop;
 			ball.setY(tmpTop);// 在initPathPoints需要先设定y
-			GameScore.reset();
+			GameScore.resetIndex();
 			initPathPoints();
 		} else {
 			calculateVY(timespan);

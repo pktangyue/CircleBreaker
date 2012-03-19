@@ -22,13 +22,21 @@ public class CircleThread extends Thread {
 
 	public void run() {
 		long firstTime = start = System.currentTimeMillis();
+		boolean isLevelComplete = view.checkLevelComplete();
+		if (isLevelComplete) {
+			GameTime.slowTime();
+		}
 		while (flag) {
 			current = System.currentTimeMillis();
-			if ((current - firstTime) / 1000.0f > DURATION) {
+			if ((current - firstTime) / GameTime.getTimeInterval() / 10f > DURATION) {
 				view.removeCircle(circle, this);
+				if (isLevelComplete) {
+					view.reset();
+				}
 				return;
 			}
-			float timespan = (float) (current - start) / 100.0f;
+			float timespan = (float) (current - start)
+					/ GameTime.getTimeInterval();
 			movePoints(timespan);
 			changeTextSize(timespan);
 			start = current;

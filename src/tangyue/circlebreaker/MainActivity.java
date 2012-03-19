@@ -20,4 +20,8 @@ public class MainActivity extends Activity {
 		BreakerView view = new BreakerView(this);
 		setContentView(view);
 	}
+
+	public void onBackPressed() {
+		this.finish();
+	}
 }

@@ -96,6 +96,8 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		baffle.reset();
 		destoryBall();
 		initBall();
+		GameTime.resetInterval();
+		GameScore.resetIndex();
 	}
 
 	public void doDraw() {
@@ -154,6 +156,18 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		thread.flag = false;
 		thread = null;
 		drawables.remove(circle);
+	}
+
+	public boolean checkLevelComplete() {
+		int size = drawables.size();
+		for (int i = size - 1; i >= 0; i--) {
+			Drawable drawable = drawables.get(i);
+			if (drawable instanceof Circle
+					&& ((Circle) drawable).isEliminated() == false) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void printFPS(Canvas canvas) {

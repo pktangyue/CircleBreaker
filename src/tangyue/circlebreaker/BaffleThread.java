@@ -20,7 +20,7 @@ public class BaffleThread extends Thread {
 		start = System.currentTimeMillis();
 		while (flag) {
 			current = System.currentTimeMillis();
-			float timespan = (current - start) / 100.0f;
+			float timespan = (current - start) / GameTime.getTimeInterval();
 			calculateV();
 			calculateLeft(timespan);
 			start = current;

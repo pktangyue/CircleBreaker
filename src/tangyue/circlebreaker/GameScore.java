@@ -34,7 +34,7 @@ public class GameScore implements Drawable {
 		return SCORE_UNIT;
 	}
 
-	public static void reset() {
+	public static void resetIndex() {
 		currentIndex = 0;
 	}
 
