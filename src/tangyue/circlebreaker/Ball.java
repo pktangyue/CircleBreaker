@@ -13,16 +13,18 @@ public class Ball implements Drawable {
 	private Paint paint = null;
 	private float x;
 	private float y;
-	private float vx = 0f;
+	private float vx = 5f;
 	private float vy = BASE_VY;
 	private boolean isLose = false;
 	private static Ball ball;
+	private float[] pathPoints;
 
 	public Ball(BreakerView view) {
 		this.view = view;
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
 		paint.setAntiAlias(true);
+		paint.setStrokeWidth(2);
 	}
 
 	public static Ball getInstance(BreakerView view) {
@@ -42,6 +44,13 @@ public class Ball implements Drawable {
 	@Override
 	public void drawSelf(Canvas canvas) {
 		canvas.drawCircle(x, y, RADIUS, paint);
+		if (pathPoints != null) {
+			canvas.drawPoints(pathPoints, paint);
+		}
+	}
+
+	public void setPathPoints(float[] pathPoints) {
+		this.pathPoints = pathPoints;
 	}
 
 	public final float getX() {
