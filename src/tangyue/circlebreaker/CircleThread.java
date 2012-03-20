@@ -31,7 +31,7 @@ public class CircleThread extends Thread {
 			if ((current - firstTime) / GameTime.getTimeInterval() / 10f > DURATION) {
 				view.removeCircle(circle, this);
 				if (isLevelComplete) {
-					view.reset();
+					view.goLevelComplete();
 				}
 				return;
 			}

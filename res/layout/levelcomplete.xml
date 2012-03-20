@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="228dp"
+        android:layout_height="53.6dp"
+        android:layout_below="@+id/best_score_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/next" />
+
+    <Button
+        android:id="@+id/retry"
+        android:layout_width="228dp"
+        android:layout_height="53.6dp"
+        android:layout_alignLeft="@+id/next"
+        android:layout_below="@+id/next"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/retry" />
+
+    <Button
+        android:id="@+id/menu"
+        android:layout_width="228dp"
+        android:layout_height="53.6dp"
+        android:layout_alignLeft="@+id/retry"
+        android:layout_below="@+id/retry"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/menu" />
+
+    <TextView
+        android:id="@+id/your_score_title"
+        style="@style/shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/next"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="60dp"
+        android:text="@string/your_score" />
+
+    <TextView
+        android:id="@+id/best_score_title"
+        style="@style/shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/your_score_title"
+        android:layout_below="@+id/your_score_title"
+        android:layout_marginTop="40dp"
+        android:text="@string/best_score" />
+
+    <TextView
+        android:id="@+id/your_score"
+        style="@style/shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/your_score_title"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/your_score_title"
+        android:text="@string/zero" />
+
+    <TextView
+        android:id="@+id/best_score"
+        style="@style/shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/best_score_title"
+        android:layout_alignBottom="@+id/best_score_title"
+        android:layout_alignLeft="@+id/your_score"
+        android:text="@string/zero" />
+
+</RelativeLayout>

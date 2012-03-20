@@ -2,6 +2,7 @@ package tangyue.circlebreaker;
 
 import java.util.ArrayList;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,12 +27,14 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	private BaffleThread baffleThread;
 	private Canvas canvas = null;
 	private boolean isStart = false;
+	private Context context;
 
 	String fps = "FPS:N/A";
 
 	public BreakerView(Context context) {
 		super(context);
 		this.sensor = BreakerSensor.getInstance(context);
+		this.context = context;
 		holder = getHolder();
 		holder.addCallback(this);
 		initCircles();
@@ -55,22 +58,22 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void initCircles() {
-		drawables.add(new Circle(50, 420, 30, Color.BLUE));
-		drawables.add(new Circle(145, 350, 30, Color.BLUE));
-		drawables.add(new Circle(240, 300, 30, Color.BLUE));
-		drawables.add(new Circle(335, 350, 30, Color.BLUE));
-		drawables.add(new Circle(430, 420, 30, Color.BLUE));
-
-		drawables.add(new Circle(50, 520, 30, Color.RED));
-		drawables.add(new Circle(145, 450, 30, Color.RED));
-		drawables.add(new Circle(240, 400, 30, Color.RED));
-		drawables.add(new Circle(335, 450, 30, Color.RED));
-		drawables.add(new Circle(430, 520, 30, Color.RED));
-
-		drawables.add(new Circle(50, 320, 30, Color.GREEN));
-		drawables.add(new Circle(145, 250, 30, Color.GREEN));
-		drawables.add(new Circle(240, 200, 30, Color.GREEN));
-		drawables.add(new Circle(335, 250, 30, Color.GREEN));
+		// drawables.add(new Circle(50, 420, 30, Color.BLUE));
+		// drawables.add(new Circle(145, 350, 30, Color.BLUE));
+		// drawables.add(new Circle(240, 300, 30, Color.BLUE));
+		// drawables.add(new Circle(335, 350, 30, Color.BLUE));
+		// drawables.add(new Circle(430, 420, 30, Color.BLUE));
+		//
+		// drawables.add(new Circle(50, 520, 30, Color.RED));
+		// drawables.add(new Circle(145, 450, 30, Color.RED));
+		// drawables.add(new Circle(240, 400, 30, Color.RED));
+		// drawables.add(new Circle(335, 450, 30, Color.RED));
+		// drawables.add(new Circle(430, 520, 30, Color.RED));
+		//
+		// drawables.add(new Circle(50, 320, 30, Color.GREEN));
+		// drawables.add(new Circle(145, 250, 30, Color.GREEN));
+		// drawables.add(new Circle(240, 200, 30, Color.GREEN));
+		// drawables.add(new Circle(335, 250, 30, Color.GREEN));
 		drawables.add(new Circle(430, 320, 30, Color.GREEN));
 	}
 
@@ -168,6 +171,12 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 			}
 		}
 		return true;
+	}
+
+	public void goLevelComplete() {
+		Intent intent = new Intent(
+				"tangyue.circlebreaker.view.LevelCompleteActivity");
+		context.startActivity(intent);
 	}
 
 	public void printFPS(Canvas canvas) {
