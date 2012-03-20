@@ -39,7 +39,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="60dp"
-        android:text="@string/your_score" />
+        android:text="@string/your_score"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/best_score_title"
@@ -49,7 +50,8 @@
         android:layout_alignRight="@+id/your_score_title"
         android:layout_below="@+id/your_score_title"
         android:layout_marginTop="40dp"
-        android:text="@string/best_score" />
+        android:text="@string/best_score"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/your_score"
@@ -59,7 +61,8 @@
         android:layout_alignBottom="@+id/your_score_title"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/your_score_title"
-        android:text="@string/zero" />
+        android:text="@string/zero"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/best_score"
@@ -69,6 +72,7 @@
         android:layout_alignBaseline="@+id/best_score_title"
         android:layout_alignBottom="@+id/best_score_title"
         android:layout_alignLeft="@+id/your_score"
-        android:text="@string/zero" />
+        android:text="@string/zero"
+        android:textSize="20sp" />
 
 </RelativeLayout>

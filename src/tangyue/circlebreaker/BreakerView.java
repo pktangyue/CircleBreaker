@@ -1,8 +1,9 @@
 package tangyue.circlebreaker;
 
 import java.util.ArrayList;
+
+import tangyue.circlebreaker.view.GameActivity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -174,9 +175,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void goLevelComplete() {
-		Intent intent = new Intent(
-				"tangyue.circlebreaker.view.LevelCompleteActivity");
-		context.startActivity(intent);
+		((GameActivity) context).startLevelComplete();
 	}
 
 	public void printFPS(Canvas canvas) {
@@ -243,6 +242,8 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		ballThread = null;
 		drawThread = null;
 		baffleThread = null;
+		GameTime.resetInterval();
+		GameScore.resetAll();
 		Debug.stopMethodTracing();
 	}
 

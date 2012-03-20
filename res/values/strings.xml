@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, MainActivity!</string>
     <string name="app_name">CircleBreaker</string>
     <string name="best_score">BEST SCORE:</string>
     <string name="your_score">YOUR SCORE:</string>

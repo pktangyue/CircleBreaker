@@ -38,6 +38,12 @@ public class GameScore implements Drawable {
 		currentIndex = 0;
 	}
 
+	public static void resetAll() {
+		currentIndex = 0;
+		currentColor = 0;
+		totalScore = 0;
+	}
+
 	public static int getTotalPoints() {
 		return totalScore;
 	}
