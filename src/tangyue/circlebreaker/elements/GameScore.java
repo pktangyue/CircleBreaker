@@ -1,6 +1,7 @@
 package tangyue.circlebreaker.elements;
 
 import tangyue.circlebreaker.interfaces.Drawable;
+import tangyue.circlebreaker.threads.BaseThread;
 import tangyue.circlebreaker.view.BreakerView;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -58,5 +59,14 @@ public class GameScore implements Drawable {
 	@Override
 	public void drawSelf(Canvas canvas) {
 		canvas.drawText("Score:" + totalScore, 0, view.getHeight(), paint);
+	}
+
+	@Override
+	public BaseThread getThread() {
+		return null;
+	}
+
+	@Override
+	public void disableThread() {
 	}
 }

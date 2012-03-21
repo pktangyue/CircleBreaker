@@ -1,6 +1,9 @@
 package tangyue.circlebreaker.elements;
 
 import tangyue.circlebreaker.interfaces.Drawable;
+import tangyue.circlebreaker.threads.BaseThread;
+import tangyue.circlebreaker.threads.CircleThread;
+import tangyue.circlebreaker.view.BreakerView;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,12 +19,14 @@ public class Circle implements Drawable {
 	private float textSize = 10;
 	private float[] pts = new float[20];// 10个点
 	private int points;
+	private CircleThread thread;
 
-	public Circle(float x, float y, float radius, int color) {
+	public Circle(BreakerView view, float x, float y, float radius, int color) {
 		this.x = x;
 		this.y = y;
 		this.radius = radius;
 		this.color = color;
+		this.thread = new CircleThread(view, this);
 		for (int i = 0; i < pts.length; i += 2) {
 			pts[i] = x;
 			pts[i + 1] = y;
@@ -81,10 +86,22 @@ public class Circle implements Drawable {
 		drawSelf(canvas);
 	}
 
+	@Override
+	public BaseThread getThread() {
+		return thread;
+	}
+
+	@Override
+	public void disableThread() {
+		thread.flag = false;
+		thread = null;
+	}
+
 	public void breakout() {
 		isEliminated = true;
 		paint.setColor(Color.WHITE);
 		paint.setStrokeWidth(2);
 		points = GameScore.getScore(color);
 	}
+
 }

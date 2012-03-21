@@ -6,6 +6,7 @@ import android.view.WindowManager;
 
 public class GameActivity extends BaseActivity {
 	private BreakerView breakerview;
+	private boolean isPause = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -21,10 +22,17 @@ public class GameActivity extends BaseActivity {
 				"tangyue.circlebreaker.view.LevelCompleteActivity");
 		intent.putExtra("score", score);
 		startActivity(intent);
+		breakerview = null;
 		this.finish();
 	}
 
-	public void onBackPassed() {
-		breakerview.pause();
+	public void onBackPressed() {
+		if (isPause) {
+			breakerview.resume();
+		} else {
+			breakerview.pause();
+		}
+		isPause = !isPause;
+		return;
 	}
 }

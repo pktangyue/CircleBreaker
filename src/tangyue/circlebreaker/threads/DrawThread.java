@@ -13,6 +13,9 @@ public class DrawThread extends BaseThread {
 
 	public void run() {
 		while (flag) {
+			if (isPause) {
+				continue;
+			}
 			synchronized (view.getHolder()) {
 				view.doDraw();
 			}

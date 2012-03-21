@@ -17,17 +17,15 @@ import android.view.SurfaceView;
 
 public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	public final static float BOTTOM_BLANK = 140f;
+	public Baffle baffle;
+	public Ball ball;
+	public BreakerSensor sensor;
 
 	private SurfaceHolder holder;
-	private Baffle baffle;
-	private Ball ball;
-	private BreakerSensor sensor;
 	private Message message;
 	private GameScore score;
 	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
 	private DrawThread drawThread;
-	private BallThread ballThread;
-	private BaffleThread baffleThread;
 	private Canvas canvas = null;
 	private boolean isStart = false;
 	private Context context;
@@ -50,34 +48,32 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private void initBaffle() {
 		baffle = Baffle.getInstance(this);
-		baffleThread = new BaffleThread(this);
 		drawables.add(baffle);
 	}
 
 	private void initBall() {
-		ball = Ball.getInstance(this);
-		ballThread = new BallThread(this);
+		ball = new Ball(this);
 		drawables.add(ball);
 	}
 
 	private void initCircles() {
-		drawables.add(new Circle(50, 420, 30, Color.BLUE));
-		drawables.add(new Circle(145, 350, 30, Color.BLUE));
-		drawables.add(new Circle(240, 300, 30, Color.BLUE));
-		drawables.add(new Circle(335, 350, 30, Color.BLUE));
-		drawables.add(new Circle(430, 420, 30, Color.BLUE));
+		drawables.add(new Circle(this, 50, 420, 30, Color.BLUE));
+		drawables.add(new Circle(this, 145, 350, 30, Color.BLUE));
+		drawables.add(new Circle(this, 240, 300, 30, Color.BLUE));
+		drawables.add(new Circle(this, 335, 350, 30, Color.BLUE));
+		drawables.add(new Circle(this, 430, 420, 30, Color.BLUE));
 
-		drawables.add(new Circle(50, 520, 30, Color.RED));
-		drawables.add(new Circle(145, 450, 30, Color.RED));
-		drawables.add(new Circle(240, 400, 30, Color.RED));
-		drawables.add(new Circle(335, 450, 30, Color.RED));
-		drawables.add(new Circle(430, 520, 30, Color.RED));
+		drawables.add(new Circle(this, 50, 520, 30, Color.RED));
+		drawables.add(new Circle(this, 145, 450, 30, Color.RED));
+		drawables.add(new Circle(this, 240, 400, 30, Color.RED));
+		drawables.add(new Circle(this, 335, 450, 30, Color.RED));
+		drawables.add(new Circle(this, 430, 520, 30, Color.RED));
 
-		drawables.add(new Circle(50, 320, 30, Color.GREEN));
-		drawables.add(new Circle(145, 250, 30, Color.GREEN));
-		drawables.add(new Circle(240, 200, 30, Color.GREEN));
-		drawables.add(new Circle(335, 250, 30, Color.GREEN));
-		drawables.add(new Circle(430, 320, 30, Color.GREEN));
+		drawables.add(new Circle(this, 50, 320, 30, Color.GREEN));
+		drawables.add(new Circle(this, 145, 250, 30, Color.GREEN));
+		drawables.add(new Circle(this, 240, 200, 30, Color.GREEN));
+		drawables.add(new Circle(this, 335, 250, 30, Color.GREEN));
+		drawables.add(new Circle(this, 430, 320, 30, Color.GREEN));
 	}
 
 	private void initMessage() {
@@ -93,8 +89,6 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	private void destoryBall() {
 		drawables.remove(ball);
 		ball = null;
-		ballThread.flag = false;
-		ballThread = null;
 	}
 
 	public void reset() {
@@ -107,9 +101,25 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void pause() {
+		for (int i = drawables.size() - 1; i >= 0; i--) {
+			try {
+				drawables.get(i).getThread().pauseThread();
+			} catch (NullPointerException e) {
+				continue;
+			}
+		}
+		drawThread.pauseThread();
 	}
 
 	public void resume() {
+		for (int i = drawables.size() - 1; i >= 0; i--) {
+			try {
+				drawables.get(i).getThread().resumeThread();
+			} catch (NullPointerException e) {
+				continue;
+			}
+		}
+		drawThread.resumeThread();
 	}
 
 	public void doDraw() {
@@ -147,17 +157,14 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 				float span = Ball.RADIUS + circle.getRadius();
 				if (deltaX * deltaX + deltaY * deltaY <= span * span) {
 					circle.breakout();
-					CircleThread circleThread = new CircleThread(this, circle);
-					circleThread.start();
+					circle.getThread().start();
 					break;// 发生一次碰撞就退出(不可能同时碰到2个)
 				}
 			}
 		}
 	}
 
-	public void removeCircle(Circle circle, CircleThread thread) {
-		thread.flag = false;
-		thread = null;
+	public void removeCircle(Circle circle) {
 		drawables.set(drawables.indexOf(circle), null);// 设为null,而不是删除，避免多线程的问题
 	}
 
@@ -174,33 +181,25 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void goLevelComplete() {
+		drawThread.flag = false;
+		drawThread = null;
+		for (int i = drawables.size() - 1; i >= 0; i--) {
+			try {
+				drawables.get(i).disableThread();
+			} catch (NullPointerException e) {
+				continue;
+			}
+		}
 		((GameActivity) context).startLevelComplete(GameScore.getTotalScore());
 	}
 
 	public void printFPS(Canvas canvas) {
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
-		Object[] arr = { fps, ball.getVY(), sensor.ratioY,
-				GameScore.getTotalScore() };
+		Object[] arr = { fps, sensor.ratioY, GameScore.getTotalScore() };
 		for (int i = 0; i < arr.length; i++) {
 			canvas.drawText(arr[i].toString(), 30, 30 * (i + 1), paint);
 		}
-	}
-
-	public final Baffle getBaffle() {
-		return baffle;
-	}
-
-	public final Ball getBall() {
-		return ball;
-	}
-
-	public final BreakerSensor getSensor() {
-		return sensor;
-	}
-
-	public final ArrayList<Drawable> getDrawables() {
-		return drawables;
 	}
 
 	@Override
@@ -209,9 +208,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
 			isStart = true;
-			if (!ballThread.isAlive()) {
-				ballThread.start();
-			}
+			ball.getThread().startThread();
 			break;
 		default:
 			break;
@@ -226,21 +223,14 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		if (!drawThread.isAlive()) {
-			drawThread.start();
-		}
-		if (!baffleThread.isAlive()) {
-			baffleThread.start();
-		}
+		drawThread.startThread();
+		baffle.getThread().startThread();
 		Debug.startMethodTracing("yourActivityTrace");
 	}
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		baffleThread.flag = ballThread.flag = drawThread.flag = false;
-		ballThread = null;
 		drawThread = null;
-		baffleThread = null;
 		GameTime.resetInterval();
 		GameScore.resetAll();
 		Debug.stopMethodTracing();

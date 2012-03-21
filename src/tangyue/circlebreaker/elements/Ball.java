@@ -1,6 +1,8 @@
 package tangyue.circlebreaker.elements;
 
 import tangyue.circlebreaker.interfaces.Drawable;
+import tangyue.circlebreaker.threads.BallThread;
+import tangyue.circlebreaker.threads.BaseThread;
 import tangyue.circlebreaker.view.BreakerView;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,28 +20,22 @@ public class Ball implements Drawable {
 	private float vx = 5f;
 	private float vy = BASE_VY;
 	private boolean isLose = false;
-	private static Ball ball;
 	private float[] pathPoints;
+	private BallThread thread;
 
 	public Ball(BreakerView view) {
 		this.view = view;
+		this.thread = new BallThread(view, this);
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
 		paint.setAntiAlias(true);
 		paint.setStrokeWidth(2);
 	}
 
-	public static Ball getInstance(BreakerView view) {
-		if (ball == null) {
-			return new Ball(view);
-		}
-		return ball;
-	}
-
 	@Override
 	public void init(Canvas canvas) {
-		this.x = view.getBaffle().getLeft() + Baffle.WIDTH / 2;
-		this.y = view.getBaffle().getBottom() - RADIUS - Baffle.HEIGHT;
+		this.x = view.baffle.getLeft() + Baffle.WIDTH / 2;
+		this.y = view.baffle.getBottom() - RADIUS - Baffle.HEIGHT;
 		drawSelf(canvas);
 	}
 
@@ -49,6 +45,17 @@ public class Ball implements Drawable {
 		if (pathPoints != null) {
 			canvas.drawPoints(pathPoints, paint);
 		}
+	}
+
+	@Override
+	public BaseThread getThread() {
+		return thread;
+	}
+
+	@Override
+	public void disableThread() {
+		thread.flag = false;
+		thread = null;
 	}
 
 	public void setPathPoints(float[] pathPoints) {

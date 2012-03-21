@@ -1,6 +1,8 @@
 package tangyue.circlebreaker.elements;
 
 import tangyue.circlebreaker.interfaces.Drawable;
+import tangyue.circlebreaker.threads.BaffleThread;
+import tangyue.circlebreaker.threads.BaseThread;
 import tangyue.circlebreaker.view.BreakerView;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,11 +17,13 @@ public class Baffle implements Drawable {
 	private float v = 0.0f;// 速度
 	private BreakerView view;
 	private Paint paint = null;
+	private BaffleThread thread;
 
 	private static Baffle baffle;
 
 	private Baffle(BreakerView view) {
 		this.view = view;
+		this.thread = new BaffleThread(view, this);
 		paint = new Paint();
 		paint.setColor(Color.GREEN);
 		paint.setAntiAlias(true);
@@ -48,6 +52,17 @@ public class Baffle implements Drawable {
 	public void reset() {
 		this.bottom = view.getHeight() - BreakerView.BOTTOM_BLANK;
 		this.left = (view.getWidth() - WIDTH) / 2.0f;
+	}
+
+	@Override
+	public BaseThread getThread() {
+		return thread;
+	}
+
+	@Override
+	public void disableThread() {
+		thread.flag = false;
+		thread = null;
 	}
 
 	public final float getLeft() {

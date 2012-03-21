@@ -1,6 +1,7 @@
 package tangyue.circlebreaker.elements;
 
 import tangyue.circlebreaker.interfaces.Drawable;
+import tangyue.circlebreaker.threads.BaseThread;
 import tangyue.circlebreaker.view.BreakerView;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -24,11 +25,20 @@ public class Message implements Drawable {
 
 	@Override
 	public void drawSelf(Canvas canvas) {
-		if (view.getBall().isLose()) {
+		if (view.ball.isLose()) {
 			paint.setTextSize(50);
 			paint.setTextAlign(Paint.Align.CENTER);
 			canvas.drawText(loseMsg, view.getWidth() / 2.0f,
 					view.getHeight() / 2.0f, paint);
 		}
+	}
+
+	@Override
+	public BaseThread getThread() {
+		return null;
+	}
+
+	@Override
+	public void disableThread() {
 	}
 }

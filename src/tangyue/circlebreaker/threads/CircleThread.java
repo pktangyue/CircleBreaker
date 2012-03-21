@@ -20,15 +20,20 @@ public class CircleThread extends BaseThread {
 	}
 
 	public void run() {
-		long firstTime = start = System.currentTimeMillis();
+		long firstTime = System.currentTimeMillis();
+		start = firstTime;
 		boolean isLevelComplete = view.checkLevelComplete();
 		if (isLevelComplete) {
 			GameTime.slowTime();
 		}
 		while (flag) {
+			if (isPause) {
+				continue;
+			}
 			current = System.currentTimeMillis();
-			if ((current - firstTime) / GameTime.getTimeInterval() / 10f > DURATION) {
-				view.removeCircle(circle, this);
+			if ((current - firstTime - pauseDuration)
+					/ GameTime.getTimeInterval() / 10f > DURATION) {
+				view.removeCircle(circle);
 				if (isLevelComplete) {
 					view.goLevelComplete();
 				}

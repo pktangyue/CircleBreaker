@@ -6,18 +6,19 @@ import tangyue.circlebreaker.view.BreakerView;
 public class BaffleThread extends BaseThread {
 	private BreakerView view;
 	private Baffle baffle;
-	private BreakerSensor sensor;
 
-	public BaffleThread(BreakerView view) {
+	public BaffleThread(BreakerView view, Baffle baffle) {
 		this.view = view;
-		this.baffle = view.getBaffle();
-		this.sensor = view.getSensor();
+		this.baffle = baffle;
 		this.flag = true;
 	}
 
 	public void run() {
 		start = System.currentTimeMillis();
 		while (flag) {
+			if (isPause) {
+				continue;
+			}
 			current = System.currentTimeMillis();
 			float timespan = (current - start) / GameTime.getTimeInterval();
 			calculateV();
@@ -27,11 +28,11 @@ public class BaffleThread extends BaseThread {
 	}
 
 	public void calculateV() {
-		if (sensor == null) {
+		if (view.sensor == null) {
 			baffle.setV(0.0f);
 			return;
 		}
-		baffle.setV(sensor.ratioX * 30.0f);
+		baffle.setV(view.sensor.ratioX * 30.0f);
 	}
 
 	public void calculateLeft(float timespan) {

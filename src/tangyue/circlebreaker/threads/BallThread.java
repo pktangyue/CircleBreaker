@@ -7,17 +7,13 @@ import tangyue.circlebreaker.view.BreakerView;
 public class BallThread extends BaseThread {
 	private BreakerView view;
 	private Ball ball;
-	private Baffle baffle;
 	private long pathStart;
-	private BreakerSensor sensor;
 	private ArrayList<Float> pathPoints = new ArrayList<Float>();
 	private int pathInterval = 0;
 
-	public BallThread(BreakerView view) {
+	public BallThread(BreakerView view, Ball ball) {
 		this.view = view;
-		this.ball = view.getBall();
-		this.baffle = view.getBaffle();
-		this.sensor = view.getSensor();
+		this.ball = ball;
 		this.flag = true;
 	}
 
@@ -25,11 +21,15 @@ public class BallThread extends BaseThread {
 		initPathPoints();
 		start = System.currentTimeMillis();
 		while (flag) {
+			if (isPause) {
+				continue;
+			}
 			current = System.currentTimeMillis();
 			float timespan = (float) (current - start)
 					/ GameTime.getTimeInterval();
 			if (ball.isLose() && ball.getY() > 1500.0f) {
 				view.reset();
+				return;
 			}
 			calculateX(timespan);
 			calculateY(timespan);
@@ -67,7 +67,7 @@ public class BallThread extends BaseThread {
 	public void setBallPath() {
 		if (pathPoints.size() == 0)
 			return;
-		long pathCurrent = System.currentTimeMillis();
+		long pathCurrent = System.currentTimeMillis() - pauseDuration;
 		int interval = (int) ((pathCurrent - pathStart)
 				/ GameTime.getTimeInterval() / 0.5f);
 		for (int i = 0; i < interval - pathInterval && pathPoints.size() > 0; i++) {
@@ -87,10 +87,11 @@ public class BallThread extends BaseThread {
 		float span = timespan * ball.getVY() + Ball.G * timespan * timespan
 				/ 2.0f;
 		float tmpTop = ball.getY() + span;
-		if (tmpTop + Ball.RADIUS > baffle.getBottom() && !ball.isLose()) {
+		if (tmpTop + Ball.RADIUS > view.baffle.getBottom() && !ball.isLose()) {
 			calculateVY();
 			calculateVX(timespan);
-			tmpTop = 2.0f * baffle.getBottom() - 2.0f * Ball.RADIUS - tmpTop;
+			tmpTop = 2.0f * view.baffle.getBottom() - 2.0f * Ball.RADIUS
+					- tmpTop;
 			ball.setY(tmpTop);// 在initPathPoints需要先设定y
 			GameScore.resetIndex();
 			initPathPoints();
@@ -115,17 +116,17 @@ public class BallThread extends BaseThread {
 	}
 
 	public void calculateVX(float timespan) {
-		float deltaT = (baffle.getBottom() - ball.getY() - Ball.RADIUS)
+		float deltaT = (view.baffle.getBottom() - ball.getY() - Ball.RADIUS)
 				/ ball.getVY();
 		if (Float.isNaN(deltaT) || Float.isInfinite(deltaT)) {
 			deltaT = 0.0f;
 		}
 		float tmpLeft = ball.getX() + deltaT * ball.getVX();
-		ball.setVX((tmpLeft - baffle.getLeft() - Baffle.WIDTH / 2.0f) * 0.5f);
+		ball.setVX((tmpLeft - view.baffle.getLeft() - Baffle.WIDTH / 2.0f) * 0.5f);
 	}
 
 	public void calculateVY() {
-		ball.setVY(Ball.BASE_VY - sensor.ratioY * 5);
+		ball.setVY(Ball.BASE_VY - view.sensor.ratioY * 5);
 	}
 
 	public void calculateVY(float timespan) {
@@ -142,9 +143,9 @@ public class BallThread extends BaseThread {
 		float spanX = timespan * ball.getVX();
 		float tmpTop = ball.getY() + spanY;
 		float tmpLeft = ball.getX() + spanX;
-		if (tmpTop + Ball.RADIUS > baffle.getBottom()
-				&& (tmpLeft < baffle.getLeft() || (tmpLeft > baffle.getLeft()
-						+ Baffle.WIDTH))) {
+		if (tmpTop + Ball.RADIUS > view.baffle.getBottom()
+				&& (tmpLeft < view.baffle.getLeft() || (tmpLeft > view.baffle
+						.getLeft() + Baffle.WIDTH))) {
 			ball.setLose(true);
 			return;
 		}
