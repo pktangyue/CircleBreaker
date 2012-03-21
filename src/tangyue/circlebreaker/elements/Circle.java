@@ -1,4 +1,4 @@
-package tangyue.circlebreaker;
+package tangyue.circlebreaker.elements;
 
 import tangyue.circlebreaker.interfaces.Drawable;
 import android.graphics.Canvas;
@@ -85,6 +85,6 @@ public class Circle implements Drawable {
 		isEliminated = true;
 		paint.setColor(Color.WHITE);
 		paint.setStrokeWidth(2);
-		points = GameScore.getPoint(color);
+		points = GameScore.getScore(color);
 	}
 }

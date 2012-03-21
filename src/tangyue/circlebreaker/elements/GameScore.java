@@ -1,6 +1,7 @@
-package tangyue.circlebreaker;
+package tangyue.circlebreaker.elements;
 
 import tangyue.circlebreaker.interfaces.Drawable;
+import tangyue.circlebreaker.view.BreakerView;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -22,7 +23,7 @@ public class GameScore implements Drawable {
 		paint.setTextAlign(Paint.Align.LEFT);
 	}
 
-	public static int getPoint(int color) {
+	public static int getScore(int color) {
 		int point;
 		if (color == currentColor) {
 			point = ++currentIndex * SCORE_UNIT;
@@ -45,7 +46,7 @@ public class GameScore implements Drawable {
 		totalScore = 0;
 	}
 
-	public static int getTotalPoints() {
+	public static int getTotalScore() {
 		return totalScore;
 	}
 

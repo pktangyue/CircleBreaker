@@ -1,13 +1,8 @@
 package tangyue.circlebreaker.threads;
 
 import java.util.ArrayList;
-
-import tangyue.circlebreaker.Baffle;
-import tangyue.circlebreaker.Ball;
-import tangyue.circlebreaker.BreakerSensor;
-import tangyue.circlebreaker.BreakerView;
-import tangyue.circlebreaker.GameScore;
-import tangyue.circlebreaker.GameTime;
+import tangyue.circlebreaker.elements.*;
+import tangyue.circlebreaker.view.BreakerView;
 
 public class BallThread extends BaseThread {
 	private BreakerView view;

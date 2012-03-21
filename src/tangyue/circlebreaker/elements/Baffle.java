@@ -1,6 +1,7 @@
-package tangyue.circlebreaker;
+package tangyue.circlebreaker.elements;
 
 import tangyue.circlebreaker.interfaces.Drawable;
+import tangyue.circlebreaker.view.BreakerView;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;

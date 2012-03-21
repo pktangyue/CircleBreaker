@@ -1,4 +1,4 @@
-package tangyue.circlebreaker;
+package tangyue.circlebreaker.elements;
 
 public class GameTime {
 	private static float TIME_UNIT = 100f;

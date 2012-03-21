@@ -1,8 +1,7 @@
 package tangyue.circlebreaker.threads;
 
-import tangyue.circlebreaker.BreakerView;
-import tangyue.circlebreaker.Circle;
-import tangyue.circlebreaker.GameTime;
+import tangyue.circlebreaker.elements.*;
+import tangyue.circlebreaker.view.BreakerView;
 
 public class CircleThread extends BaseThread {
 	private BreakerView view;

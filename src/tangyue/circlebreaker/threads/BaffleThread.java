@@ -1,9 +1,7 @@
 package tangyue.circlebreaker.threads;
 
-import tangyue.circlebreaker.Baffle;
-import tangyue.circlebreaker.BreakerSensor;
-import tangyue.circlebreaker.BreakerView;
-import tangyue.circlebreaker.GameTime;
+import tangyue.circlebreaker.elements.*;
+import tangyue.circlebreaker.view.BreakerView;
 
 public class BaffleThread extends BaseThread {
 	private BreakerView view;

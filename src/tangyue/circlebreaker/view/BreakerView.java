@@ -1,10 +1,10 @@
-package tangyue.circlebreaker;
+package tangyue.circlebreaker.view;
 
 import java.util.ArrayList;
 
+import tangyue.circlebreaker.elements.*;
 import tangyue.circlebreaker.interfaces.*;
 import tangyue.circlebreaker.threads.*;
-import tangyue.circlebreaker.view.GameActivity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -174,14 +174,14 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void goLevelComplete() {
-		((GameActivity) context).startLevelComplete();
+		((GameActivity) context).startLevelComplete(GameScore.getTotalScore());
 	}
 
 	public void printFPS(Canvas canvas) {
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
 		Object[] arr = { fps, ball.getVY(), sensor.ratioY,
-				GameScore.getTotalPoints() };
+				GameScore.getTotalScore() };
 		for (int i = 0; i < arr.length; i++) {
 			canvas.drawText(arr[i].toString(), 30, 30 * (i + 1), paint);
 		}

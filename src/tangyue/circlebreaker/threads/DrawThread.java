@@ -1,6 +1,6 @@
 package tangyue.circlebreaker.threads;
 
-import tangyue.circlebreaker.BreakerView;
+import tangyue.circlebreaker.view.BreakerView;
 
 public class DrawThread extends BaseThread {
 	private BreakerView view;

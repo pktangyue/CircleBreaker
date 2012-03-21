@@ -1,4 +1,4 @@
-package tangyue.circlebreaker;
+package tangyue.circlebreaker.elements;
 
 import android.content.Context;
 import android.hardware.Sensor;
