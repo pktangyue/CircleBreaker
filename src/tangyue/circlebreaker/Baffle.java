@@ -1,12 +1,13 @@
 package tangyue.circlebreaker;
 
+import tangyue.circlebreaker.interfaces.Drawable;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 public class Baffle implements Drawable {
-	final static float WIDTH = 120.0f;
-	final static float HEIGHT = 5.0f;
+	public final static float WIDTH = 120.0f;
+	public final static float HEIGHT = 5.0f;
 
 	private float left;
 	private float bottom;

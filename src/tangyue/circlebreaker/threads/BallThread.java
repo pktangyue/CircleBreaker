@@ -1,19 +1,22 @@
-package tangyue.circlebreaker;
+package tangyue.circlebreaker.threads;
 
 import java.util.ArrayList;
 
-public class BallThread extends Thread {
+import tangyue.circlebreaker.Baffle;
+import tangyue.circlebreaker.Ball;
+import tangyue.circlebreaker.BreakerSensor;
+import tangyue.circlebreaker.BreakerView;
+import tangyue.circlebreaker.GameScore;
+import tangyue.circlebreaker.GameTime;
+
+public class BallThread extends BaseThread {
 	private BreakerView view;
 	private Ball ball;
 	private Baffle baffle;
-	private long current;
-	private long start;
 	private long pathStart;
 	private BreakerSensor sensor;
 	private ArrayList<Float> pathPoints = new ArrayList<Float>();
 	private int pathInterval = 0;
-
-	public boolean flag = false;
 
 	public BallThread(BreakerView view) {
 		this.view = view;

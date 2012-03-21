@@ -1,13 +1,14 @@
 package tangyue.circlebreaker;
 
+import tangyue.circlebreaker.interfaces.Drawable;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 public class Ball implements Drawable {
-	final static float RADIUS = 10;
-	final static float BASE_VY = -30f;// 负数表示向上
-	final static float G = 3.0f;
+	public final static float RADIUS = 10;
+	public final static float BASE_VY = -30f;// 负数表示向上
+	public final static float G = 3.0f;
 
 	private BreakerView view;
 	private Paint paint = null;

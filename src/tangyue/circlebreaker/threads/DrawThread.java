@@ -1,11 +1,10 @@
-package tangyue.circlebreaker;
+package tangyue.circlebreaker.threads;
 
-public class DrawThread extends Thread {
+import tangyue.circlebreaker.BreakerView;
+
+public class DrawThread extends BaseThread {
 	private BreakerView view;
 	private int count = 0;
-	private long start = System.nanoTime();
-
-	public boolean flag = false;
 
 	public DrawThread(BreakerView view) {
 		this.view = view;

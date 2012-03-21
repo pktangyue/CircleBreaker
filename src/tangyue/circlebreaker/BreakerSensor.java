@@ -7,8 +7,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 public class BreakerSensor {
-	float ratioX = 0.0f;
-	float ratioY = 0.0f;
+	public float ratioX = 0.0f;
+	public float ratioY = 0.0f;
 	private static BreakerSensor sensor = null;
 
 	private BreakerSensor(Context context) {

@@ -2,6 +2,8 @@ package tangyue.circlebreaker;
 
 import java.util.ArrayList;
 
+import tangyue.circlebreaker.interfaces.*;
+import tangyue.circlebreaker.threads.*;
 import tangyue.circlebreaker.view.GameActivity;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,7 +16,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
-	final static float BOTTOM_BLANK = 140f;
+	public final static float BOTTOM_BLANK = 140f;
 
 	private SurfaceHolder holder;
 	private Baffle baffle;
@@ -30,7 +32,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	private boolean isStart = false;
 	private Context context;
 
-	String fps = "FPS:N/A";
+	public String fps = "FPS:N/A";
 
 	public BreakerView(Context context) {
 		super(context);
@@ -59,22 +61,22 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void initCircles() {
-		// drawables.add(new Circle(50, 420, 30, Color.BLUE));
-		// drawables.add(new Circle(145, 350, 30, Color.BLUE));
-		// drawables.add(new Circle(240, 300, 30, Color.BLUE));
-		// drawables.add(new Circle(335, 350, 30, Color.BLUE));
-		// drawables.add(new Circle(430, 420, 30, Color.BLUE));
-		//
-		// drawables.add(new Circle(50, 520, 30, Color.RED));
-		// drawables.add(new Circle(145, 450, 30, Color.RED));
-		// drawables.add(new Circle(240, 400, 30, Color.RED));
-		// drawables.add(new Circle(335, 450, 30, Color.RED));
-		// drawables.add(new Circle(430, 520, 30, Color.RED));
-		//
-		// drawables.add(new Circle(50, 320, 30, Color.GREEN));
-		// drawables.add(new Circle(145, 250, 30, Color.GREEN));
-		// drawables.add(new Circle(240, 200, 30, Color.GREEN));
-		// drawables.add(new Circle(335, 250, 30, Color.GREEN));
+		drawables.add(new Circle(50, 420, 30, Color.BLUE));
+		drawables.add(new Circle(145, 350, 30, Color.BLUE));
+		drawables.add(new Circle(240, 300, 30, Color.BLUE));
+		drawables.add(new Circle(335, 350, 30, Color.BLUE));
+		drawables.add(new Circle(430, 420, 30, Color.BLUE));
+
+		drawables.add(new Circle(50, 520, 30, Color.RED));
+		drawables.add(new Circle(145, 450, 30, Color.RED));
+		drawables.add(new Circle(240, 400, 30, Color.RED));
+		drawables.add(new Circle(335, 450, 30, Color.RED));
+		drawables.add(new Circle(430, 520, 30, Color.RED));
+
+		drawables.add(new Circle(50, 320, 30, Color.GREEN));
+		drawables.add(new Circle(145, 250, 30, Color.GREEN));
+		drawables.add(new Circle(240, 200, 30, Color.GREEN));
+		drawables.add(new Circle(335, 250, 30, Color.GREEN));
 		drawables.add(new Circle(430, 320, 30, Color.GREEN));
 	}
 
@@ -104,22 +106,25 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		GameScore.resetIndex();
 	}
 
+	public void pause() {
+	}
+
+	public void resume() {
+	}
+
 	public void doDraw() {
 		canvas = holder.lockCanvas();
 		// 清空canvas
 		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-		synchronized (drawables) {
-			try {
-				for (int i = 0; i < drawables.size(); i++) {
-					Drawable drawable = drawables.get(i);
-					if (!isStart) {
-						drawable.init(canvas);
-					} else {
-						drawable.drawSelf(canvas);
-					}
-				}
-
-			} catch (IndexOutOfBoundsException ec) {
+		for (int i = 0; i < drawables.size(); i++) {
+			Drawable drawable = drawables.get(i);
+			if (drawable == null) {
+				continue;
+			}
+			if (!isStart) {
+				drawable.init(canvas);
+			} else {
+				drawable.drawSelf(canvas);
 			}
 		}
 		printFPS(canvas);
@@ -130,28 +135,22 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 
 	// 检查球和圆圈的碰撞
 	public void checkEliminate(float x, float y) {
-		synchronized (drawables) {
-			try {
-				for (int i = 0; i < drawables.size(); i++) {
-					Drawable drawable = drawables.get(i);
-					if (drawable instanceof Circle) {
-						Circle circle = (Circle) drawable;
-						if (circle.isEliminated()) {
-							continue;
-						}
-						float deltaX = circle.getX() - x;
-						float deltaY = circle.getY() - y;
-						float span = Ball.RADIUS + circle.getRadius();
-						if (deltaX * deltaX + deltaY * deltaY <= span * span) {
-							circle.breakout();
-							CircleThread circleThread = new CircleThread(this,
-									circle);
-							circleThread.start();
-							break;// 发生一次碰撞就退出(不可能同时碰到2个)
-						}
-					}
+		for (int i = 0; i < drawables.size(); i++) {
+			Drawable drawable = drawables.get(i);
+			if (drawable != null && drawable instanceof Circle) {
+				Circle circle = (Circle) drawable;
+				if (circle.isEliminated()) {
+					continue;
 				}
-			} catch (IndexOutOfBoundsException ex) {
+				float deltaX = circle.getX() - x;
+				float deltaY = circle.getY() - y;
+				float span = Ball.RADIUS + circle.getRadius();
+				if (deltaX * deltaX + deltaY * deltaY <= span * span) {
+					circle.breakout();
+					CircleThread circleThread = new CircleThread(this, circle);
+					circleThread.start();
+					break;// 发生一次碰撞就退出(不可能同时碰到2个)
+				}
 			}
 		}
 	}
@@ -159,14 +158,14 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	public void removeCircle(Circle circle, CircleThread thread) {
 		thread.flag = false;
 		thread = null;
-		drawables.remove(circle);
+		drawables.set(drawables.indexOf(circle), null);// 设为null,而不是删除，避免多线程的问题
 	}
 
 	public boolean checkLevelComplete() {
 		int size = drawables.size();
 		for (int i = size - 1; i >= 0; i--) {
 			Drawable drawable = drawables.get(i);
-			if (drawable instanceof Circle
+			if (drawable != null && drawable instanceof Circle
 					&& ((Circle) drawable).isEliminated() == false) {
 				return false;
 			}

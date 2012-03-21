@@ -1,16 +1,16 @@
-package tangyue.circlebreaker;
+package tangyue.circlebreaker.threads;
 
-public class CircleThread extends Thread {
+import tangyue.circlebreaker.BreakerView;
+import tangyue.circlebreaker.Circle;
+import tangyue.circlebreaker.GameTime;
+
+public class CircleThread extends BaseThread {
 	private BreakerView view;
 	private Circle circle;
-	private long current;
-	private long start;
 	private float[] ptsV;;
 	private float[] pts;
 	private final static float DURATION = 0.5f;
 	private final static float PointV = 30.0f;
-
-	public boolean flag = false;
 
 	public CircleThread(BreakerView view, Circle circle) {
 		this.view = view;

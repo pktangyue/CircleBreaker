@@ -1,13 +1,14 @@
-package tangyue.circlebreaker;
+package tangyue.circlebreaker.threads;
 
-public class BaffleThread extends Thread {
+import tangyue.circlebreaker.Baffle;
+import tangyue.circlebreaker.BreakerSensor;
+import tangyue.circlebreaker.BreakerView;
+import tangyue.circlebreaker.GameTime;
+
+public class BaffleThread extends BaseThread {
 	private BreakerView view;
 	private Baffle baffle;
 	private BreakerSensor sensor;
-	private long current;
-	private long start;
-
-	public boolean flag = false;
 
 	public BaffleThread(BreakerView view) {
 		this.view = view;
