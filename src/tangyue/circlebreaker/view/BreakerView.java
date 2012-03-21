@@ -181,15 +181,6 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void goLevelComplete() {
-		drawThread.flag = false;
-		drawThread = null;
-		for (int i = drawables.size() - 1; i >= 0; i--) {
-			try {
-				drawables.get(i).disableThread();
-			} catch (NullPointerException e) {
-				continue;
-			}
-		}
 		((GameActivity) context).startLevelComplete(GameScore.getTotalScore());
 	}
 
@@ -230,7 +221,15 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
+		drawThread.flag = false;
 		drawThread = null;
+		for (int i = drawables.size() - 1; i >= 0; i--) {
+			try {
+				drawables.get(i).disableThread();
+			} catch (NullPointerException e) {
+				continue;
+			}
+		}
 		GameTime.resetInterval();
 		GameScore.resetAll();
 		Debug.stopMethodTracing();

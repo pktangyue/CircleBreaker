@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/puase_dialog"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <Button
+        android:id="@+id/resume"
+        android:layout_width="228dp"
+        android:layout_height="53.6dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="158dp"
+        android:background="@drawable/resume" />
+
+    <Button
+        android:id="@+id/retry"
+        android:layout_width="228dp"
+        android:layout_height="53.6dp"
+        android:layout_alignLeft="@+id/resume"
+        android:layout_below="@+id/resume"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/retry" />
+
+    <Button
+        android:id="@+id/menu"
+        android:layout_width="228dp"
+        android:layout_height="53.6dp"
+        android:layout_alignLeft="@+id/retry"
+        android:layout_below="@+id/retry"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/menu" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="228dp"
+        android:layout_height="53.6dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/paused" />
+
+</RelativeLayout>

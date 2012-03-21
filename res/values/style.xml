@@ -11,4 +11,11 @@
         <item name="android:typeface">monospace</item>
     </style>
 
+    <style name="fullscreen">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
 </resources>

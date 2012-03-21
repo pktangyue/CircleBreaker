@@ -1,5 +1,6 @@
 package tangyue.circlebreaker.view;
 
+import tangyue.circlebreaker.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowManager;
@@ -7,6 +8,7 @@ import android.view.WindowManager;
 public class GameActivity extends BaseActivity {
 	private BreakerView breakerview;
 	private boolean isPause = false;
+	private PauseDialog dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -15,6 +17,7 @@ public class GameActivity extends BaseActivity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(breakerview);
+		dialog = new PauseDialog(this, R.style.fullscreen);
 	}
 
 	public void startLevelComplete(int score) {
@@ -22,7 +25,6 @@ public class GameActivity extends BaseActivity {
 				"tangyue.circlebreaker.view.LevelCompleteActivity");
 		intent.putExtra("score", score);
 		startActivity(intent);
-		breakerview = null;
 		this.finish();
 	}
 
@@ -31,8 +33,15 @@ public class GameActivity extends BaseActivity {
 			breakerview.resume();
 		} else {
 			breakerview.pause();
+			dialog.show();
 		}
 		isPause = !isPause;
 		return;
+	}
+
+	public void finish() {
+		breakerview.destroyDrawingCache();
+		breakerview = null;
+		super.finish();
 	}
 }
