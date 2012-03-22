@@ -3,13 +3,23 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
+    <ImageView
+        android:id="@+id/levels"
+        android:layout_width="228dp"
+        android:layout_height="53.6dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/levels" />
+
     <ListView
         android:id="@+id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:dividerHeight="0dp">
+        android:layout_marginTop="80dp"
+        android:dividerHeight="0dp" >
     </ListView>
 
 </RelativeLayout>

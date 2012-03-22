@@ -28,7 +28,7 @@ public class BallThread extends BaseThread {
 			float timespan = (float) (current - start)
 					/ GameTime.getTimeInterval();
 			if (ball.isLose() && ball.getY() > 1500.0f) {
-				view.reset();
+				view.goFailDialog();
 				return;
 			}
 			calculateX(timespan);

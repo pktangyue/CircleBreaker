@@ -8,7 +8,7 @@ import android.view.WindowManager;
 public class GameActivity extends BaseActivity {
 	private BreakerView breakerview;
 	private boolean isPause = false;
-	private PauseDialog dialog;
+	private PauseDialog pauseDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -17,7 +17,7 @@ public class GameActivity extends BaseActivity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(breakerview);
-		dialog = new PauseDialog(this, R.style.fullscreen);
+		pauseDialog = new PauseDialog(this, R.style.fullscreen);
 	}
 
 	public void startLevelComplete(int score) {
@@ -28,15 +28,26 @@ public class GameActivity extends BaseActivity {
 		this.finish();
 	}
 
+	public void startFail() {
+		Intent intent = new Intent("tangyue.circlebreaker.view.FailActivity");
+		startActivity(intent);
+		this.finish();
+	}
+
 	public void onBackPressed() {
 		if (isPause) {
 			breakerview.resume();
 		} else {
 			breakerview.pause();
-			dialog.show();
+			pauseDialog.show();
 		}
 		isPause = !isPause;
 		return;
+	}
+
+	public void onPause() {
+		pauseDialog.dismiss();
+		super.onPause();
 	}
 
 	public void finish() {

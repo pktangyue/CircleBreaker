@@ -20,7 +20,7 @@ public class PauseDialog extends Dialog {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.dialog);
+		setContentView(R.layout.pause_dialog);
 		// resume button
 		resume = (Button) findViewById(R.id.resume);
 		resume.setOnClickListener(new View.OnClickListener() {

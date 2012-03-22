@@ -184,6 +184,10 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 		((GameActivity) context).startLevelComplete(GameScore.getTotalScore());
 	}
 
+	public void goFailDialog() {
+		((GameActivity) context).startFail();
+	}
+
 	public void printFPS(Canvas canvas) {
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
