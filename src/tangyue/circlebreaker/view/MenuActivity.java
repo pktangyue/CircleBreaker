@@ -39,4 +39,8 @@ public class MenuActivity extends BaseActivity {
 			}
 		});
 	}
+
+	public void onBackPressed() {
+		startMain();
+	}
 }

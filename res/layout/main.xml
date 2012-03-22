@@ -7,8 +7,27 @@
         android:id="@+id/start"
         android:layout_width="228dp"
         android:layout_height="53.6dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="180dp"
         android:background="@drawable/start" />
+
+    <Button
+        android:id="@+id/setting"
+        android:layout_width="228dp"
+        android:layout_height="53.6dp"
+        android:layout_alignLeft="@+id/start"
+        android:layout_below="@+id/start"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/setting" />
+
+    <Button
+        android:id="@+id/quit"
+        android:layout_width="228dp"
+        android:layout_height="53.6dp"
+        android:layout_alignLeft="@+id/setting"
+        android:layout_below="@+id/setting"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/quit" />
 
 </RelativeLayout>
