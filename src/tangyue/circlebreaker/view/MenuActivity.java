@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import tangyue.circlebreaker.R;
+import tangyue.circlebreaker.levels.GameLevel;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,7 +21,7 @@ public class MenuActivity extends BaseActivity {
 		ListView list = (ListView) findViewById(R.id.list);
 		list.setDivider(null);
 		ArrayList<HashMap<String, Object>> items = new ArrayList<HashMap<String, Object>>();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 1; i <= GameLevel.MAX_LEVEL; i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("item_title", String.format("%02d", i));
 			map.put("item_score", (int) (Math.random() * 10000));
@@ -33,9 +34,9 @@ public class MenuActivity extends BaseActivity {
 		list.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				startGame();
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				startGame(position + 1);
 			}
 		});
 	}

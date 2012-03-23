@@ -2,11 +2,9 @@ package tangyue.circlebreaker.view;
 
 import java.util.ArrayList;
 
-import tangyue.circlebreaker.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 public class BaseActivity extends Activity {
 	public static final int EXIT_APPLICATION = 0x0001;
@@ -29,8 +27,9 @@ public class BaseActivity extends Activity {
 		startActivity(intent);
 	}
 
-	protected void startGame() {
+	protected void startGame(int level) {
 		Intent intent = new Intent("tangyue.circlebreaker.view.GameActivity");
+		intent.putExtra("level", level);
 		startActivity(intent);
 	}
 
@@ -39,11 +38,16 @@ public class BaseActivity extends Activity {
 		startActivity(intent);
 	}
 
-	protected void setScore() {
+	protected int getScore() {
 		Intent intent = getIntent();
 		int score = intent.getIntExtra("score", 0);
-		TextView textview = (TextView) findViewById(R.id.your_score);
-		textview.setText(String.valueOf(score));
+		return score;
+	}
+
+	protected int getLevel() {
+		Intent intent = getIntent();
+		int level = intent.getIntExtra("level", 0);
+		return level;
 	}
 
 	protected void exit() {
@@ -53,5 +57,10 @@ public class BaseActivity extends Activity {
 			}
 			android.os.Process.killProcess(android.os.Process.myPid());
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		startMenu();
 	}
 }

@@ -34,8 +34,9 @@ public class PauseDialog extends Dialog {
 		retry.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((GameActivity) context).finish();
-				((GameActivity) context).startGame();
+				GameActivity activity = (GameActivity) context;
+				activity.finish();
+				activity.startGame(activity.getLevel());
 			}
 		});
 		// menu button

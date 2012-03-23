@@ -12,6 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="30dp"
+        android:shadowColor="#ffffff00"
         android:text="@string/zero"
         android:textSize="20sp" />
 
@@ -23,6 +24,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/item_title"
+        android:shadowColor="#ff00ffff"
         android:text="@string/best_score"
         android:textSize="20sp" />
 
@@ -34,6 +36,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/item_score_title"
+        android:shadowColor="#ff00ffff"
         android:text="@string/zero"
         android:textSize="30sp" />
 

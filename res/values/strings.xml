@@ -5,5 +5,6 @@
     <string name="best_score">BEST SCORE:</string>
     <string name="your_score">YOUR SCORE:</string>
     <string name="zero">0</string>
+    <string name="level">LEVEL </string>
 
 </resources>

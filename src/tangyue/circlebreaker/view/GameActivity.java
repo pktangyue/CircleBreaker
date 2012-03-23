@@ -13,23 +13,26 @@ public class GameActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		breakerview = new BreakerView(this);
+		int level = getLevel();
+		breakerview = new BreakerView(this, level);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setContentView(breakerview);
 		pauseDialog = new PauseDialog(this, R.style.fullscreen);
 	}
 
-	public void startLevelComplete(int score) {
+	public void startLevelComplete(int score, int level) {
 		Intent intent = new Intent(
 				"tangyue.circlebreaker.view.LevelCompleteActivity");
 		intent.putExtra("score", score);
+		intent.putExtra("level", level);
 		startActivity(intent);
 		this.finish();
 	}
 
-	public void startFail() {
+	public void startFail(int level) {
 		Intent intent = new Intent("tangyue.circlebreaker.view.FailActivity");
+		intent.putExtra("level", level);
 		startActivity(intent);
 		this.finish();
 	}
@@ -51,8 +54,10 @@ public class GameActivity extends BaseActivity {
 	}
 
 	public void finish() {
-		breakerview.destroyDrawingCache();
-		breakerview = null;
+		if (breakerview != null) {
+			breakerview.destroyDrawingCache();
+			breakerview = null;
+		}
 		super.finish();
 	}
 }

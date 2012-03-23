@@ -4,6 +4,7 @@ import tangyue.circlebreaker.R;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class LevelCompleteActivity extends BaseActivity {
 	private Button next;
@@ -14,13 +15,21 @@ public class LevelCompleteActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.levelcomplete);
-		setScore();
+		int score = getScore();
+		final int level = getLevel();
+		// set score
+		TextView textViewScore = (TextView) findViewById(R.id.your_score);
+		textViewScore.setText(String.valueOf(score));
+		// set level
+		TextView textViewLevel = (TextView) findViewById(R.id.level);
+		textViewLevel.setText(textViewLevel.getText()
+				+ String.format(" %02d", level));
 		// next button
 		next = (Button) findViewById(R.id.next);
 		next.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startGame();
+				startGame(level + 1);
 			}
 		});
 		// retry button
@@ -28,7 +37,7 @@ public class LevelCompleteActivity extends BaseActivity {
 		retry.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startGame();
+				startGame(level);
 			}
 		});
 		// menu button
@@ -40,5 +49,4 @@ public class LevelCompleteActivity extends BaseActivity {
 			}
 		});
 	}
-
 }

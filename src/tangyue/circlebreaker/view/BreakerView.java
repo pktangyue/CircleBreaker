@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import tangyue.circlebreaker.elements.*;
 import tangyue.circlebreaker.interfaces.*;
+import tangyue.circlebreaker.levels.*;
 import tangyue.circlebreaker.threads.*;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -29,13 +30,15 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	private Canvas canvas = null;
 	private boolean isStart = false;
 	private Context context;
+	private int level;
 
 	public String fps = "FPS:N/A";
 
-	public BreakerView(Context context) {
+	public BreakerView(Context context, int level) {
 		super(context);
 		this.sensor = BreakerSensor.getInstance(context);
 		this.context = context;
+		this.level = level;
 		holder = getHolder();
 		holder.addCallback(this);
 		initCircles();
@@ -57,23 +60,13 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private void initCircles() {
-		drawables.add(new Circle(this, 50, 420, 30, Color.BLUE));
-		drawables.add(new Circle(this, 145, 350, 30, Color.BLUE));
-		drawables.add(new Circle(this, 240, 300, 30, Color.BLUE));
-		drawables.add(new Circle(this, 335, 350, 30, Color.BLUE));
-		drawables.add(new Circle(this, 430, 420, 30, Color.BLUE));
-
-		drawables.add(new Circle(this, 50, 520, 30, Color.RED));
-		drawables.add(new Circle(this, 145, 450, 30, Color.RED));
-		drawables.add(new Circle(this, 240, 400, 30, Color.RED));
-		drawables.add(new Circle(this, 335, 450, 30, Color.RED));
-		drawables.add(new Circle(this, 430, 520, 30, Color.RED));
-
-		drawables.add(new Circle(this, 50, 320, 30, Color.GREEN));
-		drawables.add(new Circle(this, 145, 250, 30, Color.GREEN));
-		drawables.add(new Circle(this, 240, 200, 30, Color.GREEN));
-		drawables.add(new Circle(this, 335, 250, 30, Color.GREEN));
-		drawables.add(new Circle(this, 430, 320, 30, Color.GREEN));
+		try {
+			GameLevel gamelevel = LevelFactory.creator(level);
+			drawables.addAll(gamelevel.getCirclesList(this));
+		} catch (NullPointerException ex) {
+			((GameActivity) context).startMenu();
+			((GameActivity) context).finish();
+		}
 	}
 
 	private void initMessage() {
@@ -181,11 +174,13 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void goLevelComplete() {
-		((GameActivity) context).startLevelComplete(GameScore.getTotalScore());
+		((GameActivity) context).startLevelComplete(GameScore.getTotalScore(),
+				level);
 	}
 
 	public void goFailDialog() {
-		((GameActivity) context).startFail();
+		((GameActivity) context).startFail(level);
+		((GameActivity) context).finish();
 	}
 
 	public void printFPS(Canvas canvas) {

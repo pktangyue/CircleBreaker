@@ -9,7 +9,7 @@
         android:layout_height="53.6dp"
         android:layout_below="@+id/best_score_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/next" />
 
     <Button
@@ -18,7 +18,7 @@
         android:layout_height="53.6dp"
         android:layout_alignLeft="@+id/next"
         android:layout_below="@+id/next"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/retry" />
 
     <Button
@@ -27,7 +27,7 @@
         android:layout_height="53.6dp"
         android:layout_alignLeft="@+id/retry"
         android:layout_below="@+id/retry"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/menu" />
 
     <TextView
@@ -36,9 +36,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/next"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/level"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
+        android:shadowColor="#ffff0000"
         android:text="@string/your_score"
         android:textSize="20sp" />
 
@@ -49,7 +50,8 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/your_score_title"
         android:layout_below="@+id/your_score_title"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
+        android:shadowColor="#ffff0000"
         android:text="@string/best_score"
         android:textSize="20sp" />
 
@@ -61,6 +63,7 @@
         android:layout_alignBottom="@+id/your_score_title"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/your_score_title"
+        android:shadowColor="#ffff0000"
         android:text="@string/zero"
         android:textSize="20sp" />
 
@@ -72,7 +75,20 @@
         android:layout_alignBaseline="@+id/best_score_title"
         android:layout_alignBottom="@+id/best_score_title"
         android:layout_alignLeft="@+id/your_score"
+        android:shadowColor="#ffff0000"
         android:text="@string/zero"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/level"
+        style="@style/shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:shadowColor="#ff00ff00"
+        android:text="@string/level"
+        android:textSize="35sp" />
 
 </RelativeLayout>

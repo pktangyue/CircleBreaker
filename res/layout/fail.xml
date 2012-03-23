@@ -8,10 +8,31 @@
         android:id="@+id/retry"
         android:layout_width="228dp"
         android:layout_height="53.6dp"
+        android:layout_below="@+id/failed"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/retry" />
+
+    <ImageView
+        android:id="@+id/failed"
+        android:layout_width="228dp"
+        android:layout_height="53.6dp"
+        android:layout_below="@+id/level"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/failed" />
+
+    <TextView
+        android:id="@+id/level"
+        style="@style/shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="180dp"
-        android:background="@drawable/retry" />
+        android:layout_marginTop="50dp"
+        android:shadowColor="#ff00ff00"
+        android:text="@string/level"
+        android:textSize="35sp" />
 
     <Button
         android:id="@+id/menu"
@@ -21,14 +42,5 @@
         android:layout_below="@+id/retry"
         android:layout_marginTop="50dp"
         android:background="@drawable/menu" />
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="228dp"
-        android:layout_height="53.6dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:src="@drawable/failed" />
 
 </RelativeLayout>
