@@ -10,20 +10,13 @@ public class LevelCompleteActivity extends BaseActivity {
 	private Button next;
 	private Button retry;
 	private Button menu;
+	private int score;
+	private int level;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.levelcomplete);
-		int score = getScore();
-		final int level = getLevel();
-		// set score
-		TextView textViewScore = (TextView) findViewById(R.id.your_score);
-		textViewScore.setText(String.valueOf(score));
-		// set level
-		TextView textViewLevel = (TextView) findViewById(R.id.level);
-		textViewLevel.setText(textViewLevel.getText()
-				+ String.format(" %02d", level));
 		// next button
 		next = (Button) findViewById(R.id.next);
 		next.setOnClickListener(new View.OnClickListener() {
@@ -48,5 +41,19 @@ public class LevelCompleteActivity extends BaseActivity {
 				startMenu();
 			}
 		});
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		score = getScore();
+		level = getLevel();
+		// set score
+		TextView textViewScore = (TextView) findViewById(R.id.your_score);
+		textViewScore.setText(String.valueOf(score));
+		// set level
+		TextView textViewLevel = (TextView) findViewById(R.id.level);
+		textViewLevel.setText(textViewLevel.getText()
+				+ String.format(" %02d", level));
 	}
 }

@@ -9,16 +9,12 @@ import android.widget.TextView;
 public class FailActivity extends BaseActivity {
 	private Button retry;
 	private Button menu;
+	private int level;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fail);
-		// set level
-		final int level = getLevel();
-		TextView textViewLevel = (TextView) findViewById(R.id.level);
-		textViewLevel.setText(textViewLevel.getText()
-				+ String.format(" %02d", level));
 		// retry button
 		retry = (Button) findViewById(R.id.retry);
 		retry.setOnClickListener(new View.OnClickListener() {
@@ -35,5 +31,15 @@ public class FailActivity extends BaseActivity {
 				startMenu();
 			}
 		});
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		// set level
+		level = getLevel();
+		TextView textViewLevel = (TextView) findViewById(R.id.level);
+		textViewLevel.setText(textViewLevel.getText()
+				+ String.format(" %02d", level));
 	}
 }
