@@ -7,6 +7,7 @@ import android.widget.Button;
 
 public class MainActivity extends BaseActivity {
 	private Button start;
+	private Button setting;
 	private Button quit;
 
 	/** Called when the activity is first created. */
@@ -20,6 +21,14 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				startMenu();
+			}
+		});
+		// setting button
+		setting = (Button) findViewById(R.id.setting);
+		setting.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startSetting();
 			}
 		});
 		// quit button

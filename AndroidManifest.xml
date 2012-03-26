@@ -62,6 +62,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".view.SettingActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="tangyue.circlebreaker.view.SettingActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".view.GameActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

@@ -1,5 +1,6 @@
 package tangyue.circlebreaker.elements;
 
+import tangyue.circlebreaker.helper.SharedPreferencesHelper;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -10,9 +11,14 @@ public class BreakerSensor {
 	public float ratioX = 0.0f;
 	public float ratioY = 0.0f;
 	private static BreakerSensor sensor = null;
+	private float adjustX;
+	private float adjustY;
 
 	private BreakerSensor(Context context) {
 		registerSernor(context);
+		SharedPreferencesHelper helper = new SharedPreferencesHelper(context);
+		adjustX = helper.getAdjustX();
+		adjustY = helper.getAdjustY();
 	}
 
 	public static BreakerSensor getInstance(Context context) {
@@ -45,6 +51,7 @@ public class BreakerSensor {
 	}
 
 	private float limitRatioX(float value) {
+		value -= adjustX;
 		if (value > 4.0f) {
 			value = 4.0f;
 		} else if (value < -4.0f) {
@@ -54,6 +61,7 @@ public class BreakerSensor {
 	}
 
 	private float limitRatioY(float value) {
+		value -= adjustY;
 		value = value * 3f;
 		if (value > 3.0f) {
 			value = 3.0f;

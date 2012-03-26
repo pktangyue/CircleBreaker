@@ -38,6 +38,11 @@ public class BaseActivity extends Activity {
 		startActivity(intent);
 	}
 
+	protected void startSetting() {
+		Intent intent = new Intent("tangyue.circlebreaker.view.SettingActivity");
+		startActivity(intent);
+	}
+
 	protected int getScore() {
 		Intent intent = getIntent();
 		int score = intent.getIntExtra("score", 0);
