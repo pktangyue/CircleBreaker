@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import tangyue.circlebreaker.R;
+import tangyue.circlebreaker.helper.LevelSQLiteHelper;
 import tangyue.circlebreaker.levels.GameLevel;
 import android.os.Bundle;
 import android.view.View;
@@ -18,13 +19,20 @@ public class MenuActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
+		LevelSQLiteHelper helper = new LevelSQLiteHelper(this,
+				LevelSQLiteHelper.DB_NAME, null, LevelSQLiteHelper.VERSION);
+		HashMap<Integer, Integer> data = helper.getLevelHash();
+		assignListView(data);
+	}
+
+	public void assignListView(HashMap<Integer, Integer> data) {
 		ListView list = (ListView) findViewById(R.id.list);
-		list.setDivider(null);
+		list.setDivider(null);// 去掉分割线
 		ArrayList<HashMap<String, Object>> items = new ArrayList<HashMap<String, Object>>();
 		for (int i = 1; i <= GameLevel.MAX_LEVEL; i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("item_title", String.format("%02d", i));
-			map.put("item_score", (int) (Math.random() * 10000));
+			map.put("item_score", data.containsKey(i) ? data.get(i) : 0);
 			items.add(map);
 		}
 		SimpleAdapter listItemAdapter = new SimpleAdapter(this, items,

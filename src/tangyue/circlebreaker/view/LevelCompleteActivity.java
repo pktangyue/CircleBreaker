@@ -1,6 +1,7 @@
 package tangyue.circlebreaker.view;
 
 import tangyue.circlebreaker.R;
+import tangyue.circlebreaker.helper.LevelSQLiteHelper;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +13,15 @@ public class LevelCompleteActivity extends BaseActivity {
 	private Button menu;
 	private int score;
 	private int level;
+	private int bestScore;
+	private LevelSQLiteHelper helper;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.levelcomplete);
+		helper = new LevelSQLiteHelper(this, LevelSQLiteHelper.DB_NAME, null,
+				LevelSQLiteHelper.VERSION);
 		// next button
 		next = (Button) findViewById(R.id.next);
 		next.setOnClickListener(new View.OnClickListener() {
@@ -48,9 +53,18 @@ public class LevelCompleteActivity extends BaseActivity {
 		super.onStart();
 		score = getScore();
 		level = getLevel();
+		bestScore = helper.getBestScore(level);
+		// update data in SQLite
+		if (bestScore < score) {
+			helper.replaceBestScore(level, score);
+			bestScore = score;
+		}
 		// set score
 		TextView textViewScore = (TextView) findViewById(R.id.your_score);
 		textViewScore.setText(String.valueOf(score));
+		// set best score
+		TextView textViewBestScore = (TextView) findViewById(R.id.best_score);
+		textViewBestScore.setText(String.valueOf(bestScore));
 		// set level
 		TextView textViewLevel = (TextView) findViewById(R.id.level);
 		textViewLevel.setText(textViewLevel.getText()
