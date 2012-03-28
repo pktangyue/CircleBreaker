@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/item" >
+    android:background="@drawable/item_dis" >
 
     <TextView
         android:id="@+id/item_title"
@@ -12,7 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="30dp"
-        android:shadowColor="#ff00ffff"
+        android:shadowColor="#ffaaaaaa"
         android:text="@string/zero"
         android:textSize="20sp" />
 
@@ -24,8 +24,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/item_title"
-        android:shadowColor="#ff00ffff"
-        android:text="@string/best_score"
+        android:shadowColor="#ffaaaaaa"
+        android:text="@string/locked"
         android:textSize="20sp" />
 
     <TextView
@@ -36,8 +36,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/item_score_title"
-        android:shadowColor="#ff00ffff"
-        android:text="@string/zero"
+        android:shadowColor="#ffaaaaaa"
+        android:text="@string/question"
         android:textSize="30sp" />
 
 </RelativeLayout>

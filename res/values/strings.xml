@@ -4,6 +4,8 @@
     <string name="app_name">CircleBreaker</string>
     <string name="best_score">BEST SCORE:</string>
     <string name="your_score">YOUR SCORE:</string>
+    <string name="locked">NOW LOCKED:</string>
+    <string name="question">\u003F\u003F\u003F\u003F</string>
     <string name="zero">0</string>
     <string name="level">LEVEL </string>
 

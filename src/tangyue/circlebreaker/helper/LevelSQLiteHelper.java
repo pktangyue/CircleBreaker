@@ -81,4 +81,21 @@ public class LevelSQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL(sql.toString());
 		db.close();
 	}
+
+	public int getNowMaxLevel() {
+		int result = 0;
+		db = this.getWritableDatabase();
+		String maxLevelKey = "max_" + LEVEL_KEY;
+		String[] columns = new String[] { "max(" + LEVEL_KEY + ") as "
+				+ maxLevelKey };
+		Cursor cursor = db.query(TABLE_NAME, columns, null, null, null, null,
+				null);
+		int index = cursor.getColumnIndex(maxLevelKey);
+		if (cursor.moveToFirst()) {
+			result = cursor.getInt(index);
+		}
+		cursor.close();
+		db.close();
+		return result;
+	}
 }
