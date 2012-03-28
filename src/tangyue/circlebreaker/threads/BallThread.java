@@ -27,14 +27,15 @@ public class BallThread extends BaseThread {
 			current = System.currentTimeMillis();
 			float timespan = (float) (current - start)
 					/ GameTime.getTimeInterval();
-			if (ball.isLose() && ball.getY() > 1500.0f) {
+			if (ball.isLose() && ball.getY() > 1500.0f
+					&& !view.isLevelComplete()) {
 				view.goFailDialog();
 				return;
 			}
+			checkLose(timespan);
 			calculateX(timespan);
 			calculateY(timespan);
 			view.checkEliminate(ball.getX(), ball.getY());
-			checkLose(timespan);
 			setBallPath();
 			start = current;
 		}
@@ -144,8 +145,8 @@ public class BallThread extends BaseThread {
 		float tmpTop = ball.getY() + spanY;
 		float tmpLeft = ball.getX() + spanX;
 		if (tmpTop + Ball.RADIUS > view.baffle.getBottom()
-				&& (tmpLeft < view.baffle.getLeft() || (tmpLeft > view.baffle
-						.getLeft() + Baffle.WIDTH))) {
+				&& (tmpLeft + Ball.RADIUS < view.baffle.getLeft() || (tmpLeft
+						- Ball.RADIUS > view.baffle.getLeft() + Baffle.WIDTH))) {
 			ball.setLose(true);
 			return;
 		}

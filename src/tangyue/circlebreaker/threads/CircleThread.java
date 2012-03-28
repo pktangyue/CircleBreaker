@@ -8,7 +8,6 @@ public class CircleThread extends BaseThread {
 	private Circle circle;
 	private float[] ptsV;;
 	private float[] pts;
-	private final static float DURATION = 0.5f;
 	private final static float PointV = 30.0f;
 
 	public CircleThread(BreakerView view, Circle circle) {
@@ -32,7 +31,7 @@ public class CircleThread extends BaseThread {
 			}
 			current = System.currentTimeMillis();
 			if ((current - firstTime - pauseDuration)
-					/ GameTime.getTimeInterval() / 10f > DURATION) {
+					/ GameTime.getTimeInterval() / 10f > GameTime.getDuration()) {
 				view.removeCircle(circle);
 				if (isLevelComplete) {
 					view.goLevelComplete();

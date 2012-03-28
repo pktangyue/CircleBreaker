@@ -9,7 +9,6 @@ import tangyue.circlebreaker.threads.*;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.os.Debug;
 import android.view.MotionEvent;
@@ -29,6 +28,7 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	private DrawThread drawThread;
 	private Canvas canvas = null;
 	private boolean isStart = false;
+	private boolean isLevelComplete = false;
 	private Context context;
 	private int level;
 
@@ -130,10 +130,13 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 				drawable.drawSelf(canvas);
 			}
 		}
-		printFPS(canvas);
 		if (canvas != null) {
 			holder.unlockCanvasAndPost(canvas);
 		}
+	}
+
+	public String getLevel() {
+		return String.format("%02d", level);
 	}
 
 	// 检查球和圆圈的碰撞
@@ -162,15 +165,23 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public boolean checkLevelComplete() {
-		int size = drawables.size();
-		for (int i = size - 1; i >= 0; i--) {
-			Drawable drawable = drawables.get(i);
-			if (drawable != null && drawable instanceof Circle
-					&& ((Circle) drawable).isEliminated() == false) {
-				return false;
+		if (!isLevelComplete) {
+			int size = drawables.size();
+			for (int i = size - 1; i >= 0; i--) {
+				Drawable drawable = drawables.get(i);
+				if (drawable != null && drawable instanceof Circle
+						&& ((Circle) drawable).isEliminated() == false) {
+					isLevelComplete = false;
+					return isLevelComplete;
+				}
 			}
+			isLevelComplete = true;
 		}
-		return true;
+		return isLevelComplete;
+	}
+
+	public boolean isLevelComplete() {
+		return isLevelComplete;
 	}
 
 	public void goLevelComplete() {
@@ -181,15 +192,6 @@ public class BreakerView extends SurfaceView implements SurfaceHolder.Callback {
 	public void goFailDialog() {
 		((GameActivity) context).startFail(level);
 		((GameActivity) context).finish();
-	}
-
-	public void printFPS(Canvas canvas) {
-		Paint paint = new Paint();
-		paint.setColor(Color.WHITE);
-		Object[] arr = { fps, sensor.ratioY, GameScore.getTotalScore() };
-		for (int i = 0; i < arr.length; i++) {
-			canvas.drawText(arr[i].toString(), 30, 30 * (i + 1), paint);
-		}
 	}
 
 	@Override

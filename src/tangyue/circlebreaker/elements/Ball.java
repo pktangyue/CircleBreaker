@@ -17,7 +17,7 @@ public class Ball implements Drawable {
 	private Paint paint = null;
 	private float x;
 	private float y;
-	private float vx = 5f;
+	private float vx = 0f;
 	private float vy = BASE_VY;
 	private boolean isLose = false;
 	private float[] pathPoints;

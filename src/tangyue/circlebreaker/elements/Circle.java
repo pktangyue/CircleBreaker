@@ -73,6 +73,7 @@ public class Circle implements Drawable {
 	@Override
 	public void drawSelf(Canvas canvas) {
 		if (isEliminated) {
+			paint.setColor(Color.WHITE);
 			canvas.drawPoints(pts, paint);
 			textPaint.setTextSize(textSize);
 			canvas.drawText("" + points, x, y, textPaint);
@@ -99,7 +100,6 @@ public class Circle implements Drawable {
 
 	public void breakout() {
 		isEliminated = true;
-		paint.setColor(Color.WHITE);
 		paint.setStrokeWidth(2);
 		points = GameScore.getScore(color);
 	}

@@ -21,7 +21,6 @@ public class GameScore implements Drawable {
 		paint.setColor(Color.CYAN);
 		paint.setAntiAlias(true);
 		paint.setTextSize(30);
-		paint.setTextAlign(Paint.Align.LEFT);
 	}
 
 	public static int getScore(int color) {
@@ -58,7 +57,11 @@ public class GameScore implements Drawable {
 
 	@Override
 	public void drawSelf(Canvas canvas) {
+		paint.setTextAlign(Paint.Align.LEFT);
 		canvas.drawText("Score:" + totalScore, 0, view.getHeight(), paint);
+		paint.setTextAlign(Paint.Align.RIGHT);
+		canvas.drawText("Level:" + view.getLevel(), view.getWidth(),
+				view.getHeight(), paint);
 	}
 
 	@Override

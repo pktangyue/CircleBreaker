@@ -9,7 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 public class Baffle implements Drawable {
-	public final static float WIDTH = 120.0f;
+	public final static float WIDTH = 140.0f;
 	public final static float HEIGHT = 5.0f;
 
 	private float left;

@@ -52,6 +52,7 @@ public class BreakerSensor {
 
 	private float limitRatioX(float value) {
 		value -= adjustX;
+		value /= 2;
 		if (value > 4.0f) {
 			value = 4.0f;
 		} else if (value < -4.0f) {
@@ -62,7 +63,7 @@ public class BreakerSensor {
 
 	private float limitRatioY(float value) {
 		value -= adjustY;
-		value = value * 3f;
+		value = value * 2f;
 		if (value > 3.0f) {
 			value = 3.0f;
 		} else if (value < -3.0f) {
