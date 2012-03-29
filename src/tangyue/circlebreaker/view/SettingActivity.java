@@ -3,6 +3,7 @@ package tangyue.circlebreaker.view;
 import tangyue.circlebreaker.R;
 import tangyue.circlebreaker.helper.SharedPreferencesHelper;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -23,6 +24,17 @@ public class SettingActivity extends BaseActivity {
 				helper.update(view.sensorX, view.sensorY);
 				view.adjustX = view.sensorX;
 				view.adjustY = view.sensorY;
+			}
+		});
+		calibrate.setOnTouchListener(new Button.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					v.setBackgroundResource(R.drawable.calibrate_down);
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					v.setBackgroundResource(R.drawable.calibrate);
+				}
+				return false;
 			}
 		});
 		// setting view

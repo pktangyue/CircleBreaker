@@ -55,6 +55,7 @@ public class MenuActivity extends BaseActivity {
 				startGame(position + 1);
 			}
 		});
+		list.setSelection(nowMaxLevel - 1 >= 0 ? nowMaxLevel - 1 : 0);
 	}
 
 	public void onBackPressed() {

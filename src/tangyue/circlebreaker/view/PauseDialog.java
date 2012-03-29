@@ -4,6 +4,7 @@ import tangyue.circlebreaker.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -29,6 +30,17 @@ public class PauseDialog extends Dialog {
 				onBackPressed();
 			}
 		});
+		resume.setOnTouchListener(new Button.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					v.setBackgroundResource(R.drawable.resume_down);
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					v.setBackgroundResource(R.drawable.resume);
+				}
+				return false;
+			}
+		});
 		// retry button
 		retry = (Button) findViewById(R.id.retry);
 		retry.setOnClickListener(new View.OnClickListener() {
@@ -39,6 +51,17 @@ public class PauseDialog extends Dialog {
 				activity.startGame(activity.getLevel());
 			}
 		});
+		retry.setOnTouchListener(new Button.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					v.setBackgroundResource(R.drawable.retry_down);
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					v.setBackgroundResource(R.drawable.retry);
+				}
+				return false;
+			}
+		});
 		// menu button
 		menu = (Button) findViewById(R.id.menu);
 		menu.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +69,17 @@ public class PauseDialog extends Dialog {
 			public void onClick(View v) {
 				((GameActivity) context).finish();
 				((GameActivity) context).startMenu();
+			}
+		});
+		menu.setOnTouchListener(new Button.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					v.setBackgroundResource(R.drawable.menu_down);
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					v.setBackgroundResource(R.drawable.menu);
+				}
+				return false;
 			}
 		});
 	}

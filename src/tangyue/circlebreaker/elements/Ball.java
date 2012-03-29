@@ -18,7 +18,7 @@ public class Ball implements Drawable {
 	private float x;
 	private float y;
 	private float vx = 0f;
-	private float vy = BASE_VY;
+	private float vy = BASE_VY - 15f;
 	private boolean isLose = false;
 	private float[] pathPoints;
 	private BallThread thread;
