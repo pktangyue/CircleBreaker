@@ -148,6 +148,7 @@ public class BallThread extends BaseThread {
 				&& (tmpLeft + Ball.RADIUS < view.baffle.getLeft() || (tmpLeft
 						- Ball.RADIUS > view.baffle.getLeft() + Baffle.WIDTH))) {
 			ball.setLose(true);
+			BreakerVibrator.getInstance(view.getContext()).vibrate();
 			return;
 		}
 		ball.setLose(false);
