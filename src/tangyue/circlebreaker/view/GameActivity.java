@@ -82,7 +82,9 @@ public class GameActivity extends BaseActivity {
 	}
 
 	public void onPause() {
-		pauseDialog.dismiss();
+		if (pauseDialog != null) {
+			pauseDialog.dismiss();
+		}
 		super.onPause();
 	}
 
